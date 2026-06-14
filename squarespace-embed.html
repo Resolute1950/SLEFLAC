@@ -1,0 +1,313 @@
+<!--
+  SLEF National Veteran Bill Tracker
+  ===================================
+  Paste this entire block into a Squarespace "Code Block" (Embed > Code).
+  It fetches bills.json from the SLEFLAC GitHub Pages site and renders
+  a status tracker plus "take action" links for each tracked bill.
+
+  Data source: https://resolute1950.github.io/SLEFLAC/bills.json
+  (update DATA_URL below if the repo/org changes)
+-->
+<div id="sleflac-tracker" class="sleflac-tracker">
+  <div class="sleflac-loading">Loading bill tracker…</div>
+</div>
+
+<style>
+.sleflac-tracker {
+  --navy: #1a2d4f;
+  --navy-mid: #243d6b;
+  --gold: #b8912a;
+  --gold-light: #f0d896;
+  --gold-pale: #fdf8ec;
+  --gray-50: #f8f8f7;
+  --gray-100: #eeede9;
+  --gray-300: #c8c6bf;
+  --gray-500: #8a8880;
+  --gray-700: #4a4845;
+  --text: #1e1d1b;
+  --radius: 6px;
+  --radius-lg: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  color: var(--text);
+  max-width: 900px;
+  margin: 0 auto;
+}
+.sleflac-tracker * { box-sizing: border-box; }
+
+.sleflac-loading, .sleflac-error {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--gray-500);
+  font-size: 14px;
+}
+.sleflac-error { color: #8b1a1a; }
+
+.sleflac-meta {
+  font-size: 12px;
+  color: var(--gray-500);
+  margin-bottom: 1rem;
+  text-align: right;
+}
+
+.sleflac-category {
+  margin-bottom: 1.75rem;
+}
+.sleflac-category-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sleflac-category-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gray-100);
+}
+
+.sleflac-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 640px) {
+  .sleflac-grid { grid-template-columns: 1fr; }
+}
+
+.sleflac-card {
+  border: 1.5px solid var(--gray-100);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  background: var(--gray-50);
+  display: flex;
+  flex-direction: column;
+}
+.sleflac-card.priority {
+  border-color: var(--gold);
+  background: var(--gold-pale);
+  grid-column: 1 / -1;
+}
+
+.sleflac-card-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.sleflac-priority-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.sleflac-state-badge {
+  display: inline-block;
+  background: var(--navy);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+.sleflac-status-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.sleflac-bill-code {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 2px;
+}
+.sleflac-bill-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-700);
+  margin-bottom: 6px;
+}
+.sleflac-bill-summary {
+  font-size: 13px;
+  color: var(--gray-500);
+  line-height: 1.55;
+  flex: 1;
+}
+.sleflac-bill-chapter {
+  font-size: 11px;
+  color: var(--gray-500);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+.sleflac-bill-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--gray-100);
+}
+.sleflac-card.priority .sleflac-bill-actions { border-top-color: var(--gold-light); }
+
+.sleflac-take-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.sleflac-take-action:hover { background: var(--navy-mid); }
+.sleflac-card.priority .sleflac-take-action { background: var(--gold); }
+.sleflac-card.priority .sleflac-take-action:hover { background: #a07820; }
+
+.sleflac-bill-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+}
+.sleflac-bill-link:hover { text-decoration: underline; }
+
+.sleflac-last-action {
+  font-size: 11.5px;
+  color: var(--gray-500);
+  margin-top: 8px;
+}
+</style>
+
+<script>
+(function () {
+  var DATA_URL = 'https://resolute1950.github.io/SLEFLAC/bills.json';
+
+  var STATUS_COLORS = {
+    'Pending': '#8a8880',
+    'Introduced': '#3c6fb0',
+    'In Committee': '#3c6fb0',
+    'Engrossed': '#b8912a',
+    'Enrolled': '#6a4fb0',
+    'Passed': '#1a5c3a',
+    'Vetoed': '#8b1a1a',
+    'Failed / Dead': '#8a8880',
+    'Not found': '#c8c6bf',
+    'Error': '#c8c6bf',
+    'Unknown': '#c8c6bf'
+  };
+
+  function escapeHtml(v) {
+    return String(v == null ? '' : v)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function statusBadge(bill) {
+    var color = STATUS_COLORS[bill.status_label] || '#8a8880';
+    var title = bill.last_action ? (bill.last_action_date + ': ' + bill.last_action) : 'Status via LegiScan';
+    return '<span class="sleflac-status-badge" style="background:' + color + '" title="' + escapeHtml(title) + '">' + escapeHtml(bill.status_label || 'Unknown') + '</span>';
+  }
+
+  function renderCard(bill) {
+    var classes = 'sleflac-card' + (bill.priority ? ' priority' : '');
+    var lastAction = bill.last_action ? (escapeHtml(bill.last_action_date) + ' — ' + escapeHtml(bill.last_action)) : '';
+    var actionBtn = bill.advocacy_url
+      ? '<a class="sleflac-take-action" href="' + escapeHtml(bill.advocacy_url) + '" target="_blank" rel="noopener">Take action →</a>'
+      : '';
+    var billLink = bill.state_link || bill.legiscan_url;
+    var billLinkHtml = billLink
+      ? '<a class="sleflac-bill-link" href="' + escapeHtml(billLink) + '" target="_blank" rel="noopener">View bill text ↗</a>'
+      : '';
+
+    return '' +
+      '<div class="' + classes + '">' +
+        '<div class="sleflac-card-badges">' +
+          (bill.priority ? '<span class="sleflac-priority-badge">★ Priority</span>' : '') +
+          '<span class="sleflac-state-badge">' + escapeHtml(bill.state) + '</span>' +
+          statusBadge(bill) +
+        '</div>' +
+        '<div class="sleflac-bill-code">' + escapeHtml(bill.state + ' ' + bill.bill_number) + '</div>' +
+        '<div class="sleflac-bill-label">' + escapeHtml(bill.label || bill.title || '') + '</div>' +
+        '<div class="sleflac-bill-summary">' + escapeHtml(bill.summary || '') + '</div>' +
+        (bill.chapter ? '<div class="sleflac-bill-chapter">' + escapeHtml(bill.chapter) + '</div>' : '') +
+        '<div class="sleflac-bill-actions">' + actionBtn + billLinkHtml + '</div>' +
+        (lastAction ? '<div class="sleflac-last-action">' + lastAction + '</div>' : '') +
+      '</div>';
+  }
+
+  function render(data) {
+    var container = document.getElementById('sleflac-tracker');
+    var bills = (data && data.bills) || [];
+
+    if (!bills.length) {
+      container.innerHTML = '<div class="sleflac-error">No tracked bills found.</div>';
+      return;
+    }
+
+    // Group by category
+    var byCategory = {};
+    var order = [];
+    bills.forEach(function (bill) {
+      var cat = bill.category || 'Other';
+      if (!byCategory[cat]) { byCategory[cat] = []; order.push(cat); }
+      byCategory[cat].push(bill);
+    });
+
+    var generated = data.generated ? new Date(data.generated) : null;
+    var updatedStr = generated ? generated.toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : 'recently';
+
+    var html = '<div class="sleflac-meta">Live status via LegiScan · last updated ' + escapeHtml(updatedStr) + '</div>';
+
+    order.forEach(function (cat) {
+      html += '<div class="sleflac-category">';
+      html += '<div class="sleflac-category-title">' + escapeHtml(cat) + '</div>';
+      html += '<div class="sleflac-grid">';
+      byCategory[cat].forEach(function (bill) {
+        html += renderCard(bill);
+      });
+      html += '</div></div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  fetch(DATA_URL, { cache: 'no-store' })
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
+    })
+    .then(render)
+    .catch(function (err) {
+      var container = document.getElementById('sleflac-tracker');
+      container.innerHTML = '<div class="sleflac-error">Bill tracker is temporarily unavailable. Please check back later.</div>';
+      console.warn('SLEFLAC tracker: failed to load bills.json', err);
+    });
+})();
+</script>
