@@ -1,13 +1,15 @@
 // scripts/fetch-bill-status.mjs
 //
-// Fetches current status for the four Michigan veteran-related bills
-// (HB 5262, 5278, 5279, 5280) from the LegiScan API and writes the
-// result to bills.json at the repo root, which the site fetches
-// client-side to render status badges and the tracker section.
+// Reads tracked-bills.json (curated list of {state, bill_number, ...}),
+// fetches current status for each from the LegiScan API, and writes
+// bills.json with merged status + the original metadata (label,
+// category, chapter, summary, priority, advocacy_url).
 //
 // Requires env var LEGISCAN_API_KEY (set as a GitHub Actions secret).
 //
 // LegiScan API docs: https://legiscan.com/gaits/documentation/legiscan
+
+import fs from "fs/promises";
 
 const API_KEY = process.env.LEGISCAN_API_KEY;
 
@@ -16,59 +18,63 @@ if (!API_KEY) {
   process.exit(1);
 }
 
-// LegiScan bill IDs change per session, so we look bills up by
-// state + bill number using the getSearch / getBill pattern.
-// getBill accepts either an "id" (LegiScan internal bill id) or
-// a combination that requires a search first. Easiest stable
-// approach: use getMasterListRaw is overkill; instead we use
-// getSearch to resolve bill number -> LegiScan bill id, then getBill.
-
-const STATE = "MI";
-const BILL_NUMBERS = ["HB5262", "HB5278", "HB5279", "HB5280"];
-
 const BASE_URL = "https://api.legiscan.com/";
+const TRACKED_BILLS_FILE = "tracked-bills.json";
+const OUTPUT_FILE = "bills.json";
 
-async function legiscanGet(op, params) {
+async function legiscanGet(op, params, retries = 3) {
   const url = new URL(BASE_URL);
   url.searchParams.set("key", API_KEY);
   url.searchParams.set("op", op);
   for (const [k, v] of Object.entries(params)) {
     url.searchParams.set(k, v);
   }
-  const res = await fetch(url.toString());
-  if (!res.ok) {
-    throw new Error(`LegiScan API error for op=${op}: ${res.status} ${res.statusText}`);
+
+  let lastErr;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(url.toString());
+      if (!res.ok) {
+        throw new Error(`LegiScan API error for op=${op}: ${res.status} ${res.statusText}`);
+      }
+      const data = await res.json();
+      if (data.status !== "OK") {
+        throw new Error(`LegiScan API returned non-OK status for op=${op}: ${JSON.stringify(data)}`);
+      }
+      return data;
+    } catch (err) {
+      lastErr = err;
+      if (attempt < retries) {
+        const delay = attempt * 2000; // 2s, 4s, ...
+        console.warn(`  Attempt ${attempt}/${retries} failed for op=${op} (${err.message}). Retrying in ${delay}ms...`);
+        await new Promise((r) => setTimeout(r, delay));
+      }
+    }
   }
-  const data = await res.json();
-  if (data.status !== "OK") {
-    throw new Error(`LegiScan API returned non-OK status for op=${op}: ${JSON.stringify(data)}`);
-  }
-  return data;
+  throw lastErr;
 }
 
-// Resolve all bill numbers to LegiScan internal bill_ids in one shot via
-// getSessionList (find current MI session) + getMasterListRaw (full bill
-// list for that session, keyed by bill_id with bill_number on each entry).
-async function buildBillIdMap(state, billNumbers) {
-  // 1. Find the current/most recent regular session for the state
+// Build a map of normalized bill_number -> bill_id for a given state's
+// current session, via getSessionList + getMasterListRaw.
+async function buildBillIdMap(state) {
   const sessionData = await legiscanGet("getSessionList", { state });
   const sessions = sessionData.sessions || [];
-  // Prefer the session marked current; fall back to the most recent by year
-  let session = sessions.find((s) => s.session_tag === "Regular Session" && s.session_id && s.year_end >= new Date().getFullYear() && !s.special)
-    || sessions.find((s) => s.year_end >= new Date().getFullYear())
-    || sessions[sessions.length - 1];
+  const currentYear = new Date().getFullYear();
+
+  let session =
+    sessions.find((s) => s.session_tag === "Regular Session" && !s.special && s.year_end >= currentYear) ||
+    sessions.find((s) => s.year_end >= currentYear) ||
+    sessions[sessions.length - 1];
 
   if (!session) {
     throw new Error(`No session found for state ${state}`);
   }
 
-  console.log(`Using session: ${session.session_name} (id ${session.session_id})`);
+  console.log(`  [${state}] Using session: ${session.session_name} (id ${session.session_id})`);
 
-  // 2. Pull the full master list for that session
   const masterData = await legiscanGet("getMasterListRaw", { id: session.session_id });
   const masterList = masterData.masterlist || {};
 
-  // 3. Build a lookup from normalized bill number -> bill_id
   const map = {};
   for (const key of Object.keys(masterList)) {
     if (key === "session") continue;
@@ -77,13 +83,7 @@ async function buildBillIdMap(state, billNumbers) {
     const normalized = entry.number.replace(/\s+/g, "").toUpperCase();
     map[normalized] = entry.bill_id;
   }
-
-  const result = {};
-  for (const billNumber of billNumbers) {
-    const normalized = billNumber.replace(/\s+/g, "").toUpperCase();
-    result[billNumber] = map[normalized] || null;
-  }
-  return result;
+  return map;
 }
 
 async function fetchBillDetail(billId) {
@@ -102,14 +102,23 @@ const STATUS_LABELS = {
   6: "Failed / Dead",
 };
 
-function simplifyBill(bill) {
+function simplifyBill(bill, meta) {
   const history = bill.history || [];
   const lastAction = history.length ? history[history.length - 1] : null;
 
   return {
+    state: meta.state,
     bill_number: bill.bill_number,
+    label: meta.label || null,
+    category: meta.category || null,
+    chapter: meta.chapter || null,
+    summary: meta.summary || bill.description || null,
+    priority: !!meta.priority,
+    advocacy_url: meta.advocacy_url || null,
+    chamber_target: meta.chamber_target || 'both',
+    email_subject: meta.email_subject || null,
+    email_template: meta.email_template || null,
     title: bill.title,
-    description: bill.description,
     status: bill.status,
     status_label: STATUS_LABELS[bill.status] || "Unknown",
     last_action_date: lastAction ? lastAction.date : null,
@@ -121,51 +130,81 @@ function simplifyBill(bill) {
   };
 }
 
+function errorEntry(state, entry, statusLabel, errorMsg) {
+  return {
+    state,
+    bill_number: entry.bill_number,
+    label: entry.label || null,
+    category: entry.category || null,
+    chapter: entry.chapter || null,
+    summary: entry.summary || null,
+    priority: !!entry.priority,
+    advocacy_url: entry.advocacy_url || null,
+    chamber_target: entry.chamber_target || 'both',
+    email_subject: entry.email_subject || null,
+    email_template: entry.email_template || null,
+    status_label: statusLabel,
+    error: errorMsg,
+    updated: new Date().toISOString(),
+  };
+}
+
 async function main() {
+  const trackedRaw = await fs.readFile(TRACKED_BILLS_FILE, "utf-8");
+  const tracked = JSON.parse(trackedRaw);
+  const trackedBills = tracked.bills || [];
+
+  // Group tracked bills by state so we only build the bill-id map once per state
+  const byState = {};
+  for (const entry of trackedBills) {
+    const state = (entry.state || "").toUpperCase();
+    if (!byState[state]) byState[state] = [];
+    byState[state].push(entry);
+  }
+
   const results = [];
 
-  console.log(`Resolving bill IDs for ${STATE}: ${BILL_NUMBERS.join(", ")}`);
-  const billIdMap = await buildBillIdMap(STATE, BILL_NUMBERS);
-
-  for (const billNumber of BILL_NUMBERS) {
+  for (const [state, entries] of Object.entries(byState)) {
+    console.log(`Processing state: ${state} (${entries.length} bill(s))`);
+    let billIdMap = {};
     try {
-      const billId = billIdMap[billNumber];
+      billIdMap = await buildBillIdMap(state);
+    } catch (err) {
+      console.error(`  [${state}] Failed to build bill ID map: ${err.message}`);
+      for (const entry of entries) {
+        results.push(errorEntry(state, entry, "Error", err.message));
+      }
+      continue;
+    }
+
+    for (const entry of entries) {
+      const normalized = entry.bill_number.replace(/\s+/g, "").toUpperCase();
+      const billId = billIdMap[normalized];
       if (!billId) {
-        console.warn(`Could not resolve bill_id for ${billNumber}`);
-        results.push({
-          bill_number: billNumber,
-          status_label: "Not found",
-          updated: new Date().toISOString(),
-        });
+        console.warn(`  [${state}] Could not resolve bill_id for ${entry.bill_number}`);
+        results.push(errorEntry(state, entry, "Not found", null));
         continue;
       }
 
-      console.log(`Fetching detail for ${billNumber} (id ${billId})...`);
-      const bill = await fetchBillDetail(billId);
-      results.push(simplifyBill(bill));
-
-      // Be polite to the API
-      await new Promise((r) => setTimeout(r, 500));
-    } catch (err) {
-      console.error(`Error fetching ${billNumber}:`, err.message);
-      results.push({
-        bill_number: billNumber,
-        status_label: "Error",
-        error: err.message,
-        updated: new Date().toISOString(),
-      });
+      try {
+        console.log(`  [${state}] Fetching detail for ${entry.bill_number} (id ${billId})...`);
+        const bill = await fetchBillDetail(billId);
+        results.push(simplifyBill(bill, entry));
+        await new Promise((r) => setTimeout(r, 400)); // be polite to the API
+      } catch (err) {
+        console.error(`  [${state}] Error fetching ${entry.bill_number}: ${err.message}`);
+        results.push(errorEntry(state, entry, "Error", err.message));
+      }
     }
   }
 
   const output = {
     generated: new Date().toISOString(),
-    state: STATE,
     bills: results,
   };
 
-  const fs = await import("fs/promises");
-  await fs.writeFile("bills.json", JSON.stringify(output, null, 2));
-  console.log("Wrote bills.json");
+  await fs.writeFile(OUTPUT_FILE, JSON.stringify(output, null, 2));
+  console.log(`Wrote ${OUTPUT_FILE} with ${results.length} bill(s)`);
 }
 
 main().catch((err) => {
