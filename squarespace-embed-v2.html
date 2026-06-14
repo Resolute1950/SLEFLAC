@@ -60,6 +60,62 @@
   letter-spacing: 0.02em;
 }
 
+/* Intro blurb */
+.sleflac-intro {
+  padding: 1rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: 13px;
+  color: var(--gray-700);
+  line-height: 1.55;
+}
+
+/* State selector */
+.sleflac-state-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 1rem 1.5rem;
+  background: var(--paper);
+  border-bottom: 1px solid var(--gray-100);
+}
+.sleflac-state-pill {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--gray-300);
+  background: #fff;
+  color: var(--slate);
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.sleflac-state-pill:hover { border-color: var(--navy); }
+.sleflac-state-pill.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+/* Suggest-a-bill footer */
+.sleflac-footer {
+  padding: 1rem 1.5rem;
+  background: var(--paper);
+  border-top: 1px solid var(--gray-100);
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--gray-500);
+}
+.sleflac-footer a {
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+}
+.sleflac-footer a:hover { text-decoration: underline; }
+
 /* Category section */
 .sleflac-category-title {
   font-size: 11px;
@@ -258,6 +314,21 @@
 <script>
 (function () {
   var DATA_URL = 'https://resolute1950.github.io/SLEFLAC/bills.json';
+  var SUGGEST_EMAIL = 'team@slef-moaa.com';
+
+  var STATE_NAMES = {
+    AL:'Alabama', AK:'Alaska', AZ:'Arizona', AR:'Arkansas', CA:'California',
+    CO:'Colorado', CT:'Connecticut', DE:'Delaware', FL:'Florida', GA:'Georgia',
+    HI:'Hawaii', ID:'Idaho', IL:'Illinois', IN:'Indiana', IA:'Iowa',
+    KS:'Kansas', KY:'Kentucky', LA:'Louisiana', ME:'Maine', MD:'Maryland',
+    MA:'Massachusetts', MI:'Michigan', MN:'Minnesota', MS:'Mississippi', MO:'Missouri',
+    MT:'Montana', NE:'Nebraska', NV:'Nevada', NH:'New Hampshire', NJ:'New Jersey',
+    NM:'New Mexico', NY:'New York', NC:'North Carolina', ND:'North Dakota', OH:'Ohio',
+    OK:'Oklahoma', OR:'Oregon', PA:'Pennsylvania', RI:'Rhode Island', SC:'South Carolina',
+    SD:'South Dakota', TN:'Tennessee', TX:'Texas', UT:'Utah', VT:'Vermont',
+    VA:'Virginia', WA:'Washington', WV:'West Virginia', WI:'Wisconsin', WY:'Wyoming',
+    DC:'District of Columbia'
+  };
 
   var STATUS_COLORS = {
     'Pending': '#8a8880',
@@ -333,14 +404,33 @@
       '</div>';
   }
 
-  function render(data) {
-    var container = document.getElementById('sleflac-tracker');
-    var bills = (data && data.bills) || [];
+  var allBills = [];
+  var generatedStr = '';
 
-    if (!bills.length) {
-      container.innerHTML = '<div class="sleflac-error">No tracked bills found.</div>';
-      return;
-    }
+  function buildSuggestMailto() {
+    var subject = 'SLEF Bill Tracker \u2014 Suggested Bill';
+    var body = [
+      'State (2-letter code): ',
+      'Bill number (e.g. HB123): ',
+      'Bill title / short label: ',
+      'Category (e.g. Veteran Recognition, Benefits, Tax, etc.): ',
+      'Summary (1-2 sentences in plain language): ',
+      'Why this matters to veterans: ',
+      'Priority bill? (yes/no): ',
+      '',
+      'Your name: ',
+      'Your MOAA chapter / council: '
+    ].join('\n');
+    return 'mailto:' + encodeURIComponent(SUGGEST_EMAIL) +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  }
+
+  function renderForState(selectedState) {
+    var container = document.getElementById('sleflac-tracker');
+    var bills = allBills.filter(function (b) {
+      return !selectedState || b.state === selectedState;
+    });
 
     var byCategory = {};
     var order = [];
@@ -350,23 +440,90 @@
       byCategory[cat].push(bill);
     });
 
-    var generated = data.generated ? new Date(data.generated) : null;
-    var updatedStr = generated ? generated.toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : 'recently';
+    // Build state selector from the full unfiltered list
+    var states = [];
+    allBills.forEach(function (b) {
+      if (b.state && states.indexOf(b.state) === -1) states.push(b.state);
+    });
+    states.sort(function (a, b) {
+      return (STATE_NAMES[a] || a).localeCompare(STATE_NAMES[b] || b);
+    });
+
+    var selectorHtml = '';
+    if (states.length) {
+      selectorHtml = '<div class="sleflac-state-selector">';
+      states.forEach(function (st) {
+        var active = st === selectedState ? ' active' : '';
+        selectorHtml += '<button type="button" class="sleflac-state-pill' + active + '" data-state="' + escapeHtml(st) + '">' + escapeHtml(STATE_NAMES[st] || st) + '</button>';
+      });
+      selectorHtml += '</div>';
+    }
+
+    var rowsHtml = '';
+    if (!bills.length) {
+      rowsHtml = '<div class="sleflac-error">No tracked bills for this state yet.</div>';
+    } else {
+      order.forEach(function (cat) {
+        rowsHtml += '<div class="sleflac-category-title">' + escapeHtml(cat) + '</div>';
+        byCategory[cat].forEach(function (bill) {
+          rowsHtml += renderRow(bill);
+        });
+      });
+    }
+
+    var footerHtml =
+      '<div class="sleflac-footer">' +
+        'Know of a veteran-related bill we should track? ' +
+        '<a href="' + buildSuggestMailto() + '">Suggest a bill &rarr;</a>' +
+      '</div>';
+
+    var introHtml =
+      '<div class="sleflac-intro">' +
+        'Select your state below to view veteran-related bills currently moving through your state legislature. ' +
+        'Each bill includes a live status update and a &ldquo;Take action&rdquo; button to contact your state representative directly. ' +
+        'Don&rsquo;t see a bill that should be here? Use the link at the bottom to suggest one.' +
+      '</div>';
 
     var html = '' +
       '<div class="sleflac-header">' +
         '<div class="sleflac-header-title">State Legislative Tracker &mdash; Veteran-Related Bills</div>' +
-        '<div class="sleflac-header-meta">Live via LegiScan &middot; updated ' + escapeHtml(updatedStr) + '</div>' +
-      '</div>';
-
-    order.forEach(function (cat) {
-      html += '<div class="sleflac-category-title">' + escapeHtml(cat) + '</div>';
-      byCategory[cat].forEach(function (bill) {
-        html += renderRow(bill);
-      });
-    });
+        '<div class="sleflac-header-meta">Live via LegiScan &middot; updated ' + escapeHtml(generatedStr) + '</div>' +
+      '</div>' +
+      introHtml +
+      selectorHtml +
+      rowsHtml +
+      footerHtml;
 
     container.innerHTML = html;
+
+    container.querySelectorAll('.sleflac-state-pill').forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        renderForState(pill.getAttribute('data-state'));
+      });
+    });
+  }
+
+  function render(data) {
+    var container = document.getElementById('sleflac-tracker');
+    allBills = (data && data.bills) || [];
+
+    if (!allBills.length) {
+      container.innerHTML = '<div class="sleflac-error">No tracked bills found.</div>';
+      return;
+    }
+
+    var generated = data.generated ? new Date(data.generated) : null;
+    generatedStr = generated ? generated.toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : 'recently';
+
+    // Default to the first state alphabetically (or the only one)
+    var firstState = null;
+    allBills.forEach(function (b) {
+      if (b.state && (!firstState || (STATE_NAMES[b.state] || b.state).localeCompare(STATE_NAMES[firstState] || firstState) < 0)) {
+        firstState = b.state;
+      }
+    });
+
+    renderForState(firstState);
   }
 
   fetch(DATA_URL, { cache: 'no-store' })
