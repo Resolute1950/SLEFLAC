@@ -38,6 +38,28 @@ function jsonResponse(data, status = 200) {
   });
 }
 
+// Returns true if this person is a STATE legislator (not federal Congress).
+// Open States /people.geo can return federal House/Senate members alongside
+// state legislators; we filter those out here.
+function isStateLegislator(person) {
+  var jurisdictionId = (person.jurisdiction && person.jurisdiction.id) || '';
+  var role = person.current_role || {};
+  var roleJurisdiction = (role.jurisdiction && role.jurisdiction.id) || '';
+
+  var combined = jurisdictionId + ' ' + roleJurisdiction;
+
+  // Federal jurisdiction is 'ocd-jurisdiction/country:us/government'
+  if (/country:us\/government/.test(combined)) return false;
+
+  // State jurisdictions look like 'ocd-jurisdiction/country:us/state:mi/government'
+  if (/country:us\/state:/.test(combined)) return true;
+
+  // If jurisdiction info is missing/ambiguous, fall back to org_classification:
+  // state legislatures use 'upper'/'lower'; US Congress people sometimes carry
+  // the same values, so this is a last-resort heuristic only.
+  return role.org_classification === 'upper' || role.org_classification === 'lower';
+}
+
 // Normalize a person from Open States into a simpler shape for the UI
 function simplifyPerson(person) {
   var role = person.current_role || {};
@@ -89,7 +111,7 @@ async function lookupLegislators(lat, lng, apiKey) {
   }
   var data = await res.json();
   var results = data.results || [];
-  return results.map(simplifyPerson);
+  return results.filter(isStateLegislator).map(simplifyPerson);
 }
 
 export default {
