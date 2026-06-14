@@ -1,11 +1,19 @@
 {
-  "generated": "2026-06-14T17:39:53.757Z",
-  "state": "MI",
+  "generated": "2026-06-14T17:44:54.853Z",
   "bills": [
     {
+      "state": "MI",
       "bill_number": "HB5262",
+      "label": "Veteran of the Uniformed Services Definition",
+      "category": "Veteran Recognition (NOAA/USPHS)",
+      "chapter": "Michigan Council of Chapters",
+      "summary": "Amends 1965 PA 190 (MCL 35.61) to define 'veteran of the uniformed services' to include NOAA and U.S. Public Health Service commissioned officers, consistent with Title 38 USC.",
+      "priority": false,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HB5262",
+      "chamber_target": "lower",
+      "email_subject": "Support for HB 5262 — Veteran Recognition for NOAA & USPHS Officers",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HB 5262, which would amend Act 190 of 1965 to include commissioned officers of NOAA and the USPHS as a class of veterans, consistent with the federal definition under Title 38 of the United States Code.\n\nUnder federal law, NOAA and USPHS commissioned officers are recognized as veterans by the Department of Veterans Affairs. Michigan law currently fails to extend this same recognition, creating an unjust gap in benefits and honors for individuals who have served in a uniformed capacity.\n\nHB 5262 is a straightforward alignment of Michigan law with existing federal standards. I respectfully ask for your support in advancing this bill through committee.\n\nThank you for your service to the people of Michigan.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "title": "Veterans: other; definition for veteran of the uniformed services; create. Amends sec. 1 of 1965 PA 190 (MCL 35.61).",
-      "description": "Veterans: other; definition for veteran of the uniformed services; create. Amends sec. 1 of 1965 PA 190 (MCL 35.61).",
       "status": 1,
       "status_label": "Introduced",
       "last_action_date": "2025-11-13",
@@ -13,12 +21,21 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5262/2025",
-      "updated": "2026-06-14T17:39:51.567Z"
+      "updated": "2026-06-14T17:44:53.102Z"
     },
     {
+      "state": "MI",
       "bill_number": "HB5278",
+      "label": "State ID Card Veteran Designation",
+      "category": "Veteran Recognition (NOAA/USPHS)",
+      "chapter": "Michigan Council of Chapters",
+      "summary": "Amends 1972 PA 222 to extend the veteran designation on Michigan state ID cards to NOAA and USPHS commissioned officers.",
+      "priority": false,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HB5278",
+      "chamber_target": "lower",
+      "email_subject": "Support for HB 5278 — Veteran ID Recognition for NOAA & USPHS Officers",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to ask for your support of HB 5278, which would extend the veteran designation on Michigan state identification cards to commissioned officers of NOAA and the USPHS.\n\nThese uniformed service members are recognized as veterans under federal law (38 USC) but are currently excluded from this recognition on Michigan state IDs. This small change would mean a great deal to the men and women who served in these federal uniformed services and now call Michigan home.\n\nI respectfully request your support in moving HB 5278 forward in the House Government Operations Committee.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "title": "State: identification cards; individuals who served in the NOAACOC or USPHSCC; include in the definition of veteran. Amends sec. 2 of 1972 PA 222 (MCL 28.292).",
-      "description": "State: identification cards; individuals who served in the NOAACOC or USPHSCC; include in the definition of veteran. Amends sec. 2 of 1972 PA 222 (MCL 28.292).",
       "status": 1,
       "status_label": "Introduced",
       "last_action_date": "2025-11-13",
@@ -26,12 +43,21 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5278/2025",
-      "updated": "2026-06-14T17:39:52.133Z"
+      "updated": "2026-06-14T17:44:53.565Z"
     },
     {
+      "state": "MI",
       "bill_number": "HB5279",
+      "label": "Driver's License Veteran Designation",
+      "category": "Veteran Recognition (NOAA/USPHS)",
+      "chapter": "Michigan Council of Chapters",
+      "summary": "Amends 1949 PA 300 (Michigan Vehicle Code) to extend the veteran designation on driver's licenses to NOAA and USPHS commissioned officers.",
+      "priority": false,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HB5279",
+      "chamber_target": "lower",
+      "email_subject": "Support for HB 5279 — Veteran Driver's License Recognition for NOAA & USPHS Officers",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to request your support for HB 5279, which would extend the veteran designation on Michigan driver's licenses to commissioned officers of NOAA and the USPHS.\n\nThese federally recognized uniformed service veterans currently cannot receive the veteran designation on their Michigan driver's license — an inconsistency with federal law that this bill would correct. The change carries no meaningful fiscal impact and simply provides fair, equal recognition to all who have served.\n\nI ask that you support HB 5279 and help advance it through the House Government Operations Committee.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "title": "Vehicles: registration plates; individuals who served in the NOAACOC or USPHSCC; include in the definition of veteran and provide special registration plates for. Amends sec. 310 of 1949 PA 300 (MCL 257.310) & adds secs. 803v & 803w.",
-      "description": "Vehicles: registration plates; individuals who served in the NOAACOC or USPHSCC; include in the definition of veteran and provide special registration plates for. Amends sec. 310 of 1949 PA 300 (MCL 257.310) & adds secs. 803v & 803w.",
       "status": 1,
       "status_label": "Introduced",
       "last_action_date": "2025-11-13",
@@ -39,12 +65,21 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5279/2025",
-      "updated": "2026-06-14T17:39:52.696Z"
+      "updated": "2026-06-14T17:44:54.009Z"
     },
     {
+      "state": "MI",
       "bill_number": "HB5280",
+      "label": "Retirement Pay Tax Equity",
+      "category": "Veteran Recognition (NOAA/USPHS)",
+      "chapter": "Michigan Council of Chapters",
+      "summary": "Amends 1967 PA 281 (Income Tax Act) to extend Michigan retirement/pension tax deductions to NOAA and USPHS commissioned officers on par with other uniformed services veterans.",
+      "priority": true,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HB5280",
+      "chamber_target": "lower",
+      "email_subject": "Support for HB 5280 — Retirement Pay Tax Equity for NOAA & USPHS Officers",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to respectfully request your support for HB 5280, which would extend Michigan retirement tax fairness to active duty, retired officers, and surviving spouses of the United States Public Health Service (USPHS) and National Oceanic and Atmospheric Administration (NOAA) Commissioned Corps.\n\nThese individuals are members of the uniformed services of the United States and are recognized as veterans by the Department of Veterans Affairs. HB 5280 is a narrow, fiscally responsible measure that simply ensures equal treatment among federally recognized uniformed services retirees.\n\nI respectfully ask that you support HB 5280 and assist in advancing the bill through the House Government Operations Committee.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "title": "Individual income tax: deductions; retirement and pension benefits and student loan forgiveness deductions for certain commissioned officers; provide for. Amends sec. 30 of 1967 PA 281 (MCL 206.30).",
-      "description": "Individual income tax: deductions; retirement and pension benefits and student loan forgiveness deductions for certain commissioned officers; provide for. Amends sec. 30 of 1967 PA 281 (MCL 206.30).",
       "status": 1,
       "status_label": "Introduced",
       "last_action_date": "2025-11-13",
@@ -52,7 +87,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5280/2025",
-      "updated": "2026-06-14T17:39:53.258Z"
+      "updated": "2026-06-14T17:44:54.453Z"
     }
   ]
 }
