@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-15T18:40:07.123Z",
+  "generated": "2026-06-14T17:44:54.853Z",
   "bills": [
     {
       "state": "MI",
@@ -21,7 +21,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5262/2025",
-      "updated": "2026-06-15T18:40:04.733Z"
+      "updated": "2026-06-14T17:44:53.102Z"
     },
     {
       "state": "MI",
@@ -43,7 +43,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5278/2025",
-      "updated": "2026-06-15T18:40:05.188Z"
+      "updated": "2026-06-14T17:44:53.565Z"
     },
     {
       "state": "MI",
@@ -65,7 +65,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5279/2025",
-      "updated": "2026-06-15T18:40:05.637Z"
+      "updated": "2026-06-14T17:44:54.009Z"
     },
     {
       "state": "MI",
@@ -87,7 +87,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5280/2025",
-      "updated": "2026-06-15T18:40:06.080Z"
+      "updated": "2026-06-14T17:44:54.453Z"
     },
     {
       "state": "MN",
@@ -99,17 +99,17 @@
       "priority": true,
       "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HF3911",
       "chamber_target": "lower",
-      "email_subject": "Support for HF 3911 — Veterans Home Eligibility for NOAA & USPHS Officers",
+      "email_subject": "Support for HF 3911 \u2014 Veterans Home Eligibility for NOAA & USPHS Officers",
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HF 3911, which would authorize certain former commissioned officers of the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) Commissioned Corps to reside in Minnesota veterans homes, provided they meet honorable service and active duty requirements.\n\nUnder federal law (Title 38 USC), commissioned officers of the USPHS and NOAA are recognized as veterans by the Department of Veterans Affairs. Minnesota's veterans home eligibility rules currently do not reflect this recognition, leaving these veterans without access to a benefit available to their peers in other uniformed services.\n\nHF 3911 is a narrow, common-sense fix that aligns Minnesota law with the federal definition of veteran. I respectfully ask for your support in advancing this bill.\n\nThank you for your service to the people of Minnesota.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "title": "Former officers of the Public Health Service and the National Oceanic and Atmospheric Administration authorized to reside in state veterans homes.",
-      "status": 1,
-      "status_label": "Introduced",
-      "last_action_date": "2026-03-05",
-      "last_action": "Author added Hansen, R.",
-      "committee": "Veterans and Military Affairs",
-      "state_link": "https://www.revisor.mn.gov/bills/94/2026/0/HF/3911/",
+      "status": 0,
+      "status_label": "Pending",
+      "last_action_date": null,
+      "last_action": "Pending status update from LegiScan",
+      "committee": null,
+      "state_link": "https://www.revisor.mn.gov/bills/bill.php?b=House&f=HF3911&ssn=0&y=2025",
       "legiscan_url": "https://legiscan.com/MN/bill/HF3911/2025",
-      "updated": "2026-06-15T18:40:06.723Z"
+      "updated": "2026-06-15T00:00:00.000Z"
     }
   ]
 }
