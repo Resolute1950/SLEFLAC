@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-15T19:03:10.140Z",
+  "generated": "2026-06-14T17:44:54.853Z",
   "bills": [
     {
       "state": "MI",
@@ -21,7 +21,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5262/2025",
-      "updated": "2026-06-15T19:03:07.798Z"
+      "updated": "2026-06-14T17:44:53.102Z"
     },
     {
       "state": "MI",
@@ -43,7 +43,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5278/2025",
-      "updated": "2026-06-15T19:03:08.233Z"
+      "updated": "2026-06-14T17:44:53.565Z"
     },
     {
       "state": "MI",
@@ -65,7 +65,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5279/2025",
-      "updated": "2026-06-15T19:03:08.664Z"
+      "updated": "2026-06-14T17:44:54.009Z"
     },
     {
       "state": "MI",
@@ -87,7 +87,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5280/2025",
-      "updated": "2026-06-15T19:03:09.095Z"
+      "updated": "2026-06-14T17:44:54.453Z"
     },
     {
       "state": "MN",
@@ -99,17 +99,39 @@
       "priority": true,
       "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HF3911",
       "chamber_target": "lower",
-      "email_subject": "Support for HF 3911 — Veterans Home Eligibility for NOAA & USPHS Officers",
+      "email_subject": "Support for HF 3911 \u2014 Veterans Home Eligibility for NOAA & USPHS Officers",
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HF 3911, which would authorize certain former commissioned officers of the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) Commissioned Corps to reside in Minnesota veterans homes, provided they meet honorable service and active duty requirements.\n\nUnder federal law (Title 38 USC), commissioned officers of the USPHS and NOAA are recognized as veterans by the Department of Veterans Affairs. Minnesota's veterans home eligibility rules currently do not reflect this recognition, leaving these veterans without access to a benefit available to their peers in other uniformed services.\n\nHF 3911 is a narrow, common-sense fix that aligns Minnesota law with the federal definition of veteran. I respectfully ask for your support in advancing this bill.\n\nThank you for your service to the people of Minnesota.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "title": "Former officers of the Public Health Service and the National Oceanic and Atmospheric Administration authorized to reside in state veterans homes.",
-      "status": 1,
-      "status_label": "Introduced",
-      "last_action_date": "2026-03-05",
-      "last_action": "Author added Hansen, R.",
-      "committee": "Veterans and Military Affairs",
-      "state_link": "https://www.revisor.mn.gov/bills/94/2026/0/HF/3911/",
+      "status": 0,
+      "status_label": "Pending",
+      "last_action_date": null,
+      "last_action": "Pending status update from LegiScan",
+      "committee": null,
+      "state_link": "https://www.revisor.mn.gov/bills/bill.php?b=House&f=HF3911&ssn=0&y=2025",
       "legiscan_url": "https://legiscan.com/MN/bill/HF3911/2025",
-      "updated": "2026-06-15T19:03:09.741Z"
+      "updated": "2026-06-15T00:00:00.000Z"
+    },
+    {
+      "state": "PA",
+      "bill_number": "SB1209",
+      "label": "PA Benefit Scam Protection",
+      "category": "Benefits",
+      "chapter": "Pennsylvania Council of Chapters",
+      "summary": "An Act amending Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes to strengthen the Veterans' Trust Fund, provide for grants to veterans' service officer programs, establish veterans' claims assistance standards, and impose penalties on those who exploit veterans through fraudulent benefits claims assistance.",
+      "priority": true,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=SB1209",
+      "chamber_target": "upper",
+      "email_subject": "Support for SB 1209 \u2014 PA Benefit Scam Protection",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for SB 1209, which amends Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes to strengthen protections for veterans seeking help with their benefits claims.\n\nClaim sharks and predatory benefit consultants continue to take advantage of veterans, often charging illegal fees or providing inadequate assistance with VA claims. SB 1209 addresses this by further providing for the Veterans' Trust Fund, supporting grants to veterans' service officer programs, establishing clear standards for veterans' claims assistance, and imposing penalties on bad actors who exploit veterans.\n\nThis bill is an important step toward ensuring Pennsylvania veterans can access trustworthy, accountable help when filing for the benefits they have earned.\n\nI respectfully ask for your support in advancing SB 1209.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
+      "title": "An Act amending Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes, in State Veterans' Commission and Deputy Adjutant General for Veterans' Affairs, further providing for Veterans' Trust Fund; in veterans' organizations, further providing for grants to veterans' service officer programs and providing for veterans' claims assistance standards; and imposing penalties.",
+      "status": 0,
+      "status_label": "Pending",
+      "last_action_date": null,
+      "last_action": "Pending status update from LegiScan",
+      "committee": null,
+      "state_link": "https://www.legis.state.pa.us/cfdocs/billinfo/billinfo.cfm?syear=2025&sind=0&body=S&type=B&bn=1209",
+      "legiscan_url": "https://legiscan.com/PA/bill/SB1209/2025",
+      "updated": "2026-06-15T00:00:00.000Z"
     }
   ]
 }
