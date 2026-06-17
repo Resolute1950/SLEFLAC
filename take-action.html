@@ -259,6 +259,15 @@ textarea {
       .then(function (data) {
         if (data.error) throw new Error(data.error);
 
+        // Validate that the ZIP is in the same state as the bill
+        var billStateCode = currentBill ? (currentBill.state || '').toUpperCase() : '';
+        var zipState = ((data.location && data.location.state) || '').toUpperCase();
+        if (billStateCode && zipState && zipState !== billStateCode) {
+          statusEl.className = 'status-msg error';
+          statusEl.textContent = 'This is a ' + billStateCode + ' bill. Please enter a ZIP code in ' + billStateCode + '.';
+          return;
+        }
+
         var legislators = data.legislators || [];
         var target = currentBill ? currentBill.chamber_target : 'both';
         var filtered = legislators.filter(function (l) {
