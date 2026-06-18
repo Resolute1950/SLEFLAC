@@ -233,7 +233,7 @@ textarea {
     container.className = 'bill-card' + (bill.priority ? ' priority' : '');
     var position = (bill.position || 'support').toLowerCase();
     var isOppose = position === 'oppose';
-    var badgeLabel = isOppose ? '&#9660; Opposed by SLEF' : '&#9650; Supported by SLEF';
+    var badgeLabel = isOppose ? '&#9660; Opposed' : '&#9650; Supported';
     var notesHtml = '';
     if (bill.position_notes && bill.position_notes.trim()) {
       notesHtml = '<div class="position-notes ' + position + '">' + escapeHtml(bill.position_notes.trim()) + '</div>';
