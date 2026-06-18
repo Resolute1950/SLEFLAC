@@ -141,17 +141,22 @@ textarea {
   </div>
 
   <div class="step">
-    <div class="step-title">1. Enter your ZIP code</div>
+    <div class="step-title">1. Enter your address</div>
     <div class="field-row">
-      <div class="field" style="max-width:140px;">
+      <div class="field" style="flex:2;">
+        <label for="street">Street address</label>
+        <input type="text" id="street" inputmode="text" placeholder="123 Main St (no apartment needed)" autocomplete="street-address"/>
+      </div>
+      <div class="field" style="max-width:130px;">
         <label for="zip">ZIP code</label>
-        <input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="48933"/>
+        <input type="text" id="zip" inputmode="numeric" maxlength="5" placeholder="48933" autocomplete="postal-code"/>
       </div>
       <div class="field" style="display:flex; align-items:flex-end;">
         <button class="btn" id="lookup-btn">Find my legislators</button>
       </div>
     </div>
     <div id="lookup-status" class="status-msg"></div>
+    <p style="font-size:12px;color:var(--gray-500);margin-top:8px;">Your address is used only to identify your legislative district and is not stored.</p>
   </div>
 
   <div class="step hidden" id="legislator-step">
@@ -278,9 +283,16 @@ textarea {
 
   document.getElementById('lookup-btn').addEventListener('click', function () {
     var zip = document.getElementById('zip').value.trim();
+    var street = document.getElementById('street').value.trim();
     var statusEl = document.getElementById('lookup-status');
     var legStep = document.getElementById('legislator-step');
     var listEl = document.getElementById('legislator-list');
+
+    if (!street) {
+      statusEl.className = 'status-msg error';
+      statusEl.textContent = 'Please enter your street address.';
+      return;
+    }
 
     if (!/^\d{5}$/.test(zip)) {
       statusEl.className = 'status-msg error';
@@ -293,7 +305,9 @@ textarea {
     legStep.classList.add('hidden');
     listEl.innerHTML = '';
 
-    fetch(WORKER_URL + '?zip=' + encodeURIComponent(zip))
+    var lookupUrl = WORKER_URL + '?zip=' + encodeURIComponent(zip) + '&street=' + encodeURIComponent(street);
+
+    fetch(lookupUrl)
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (data.error) throw new Error(data.error);
