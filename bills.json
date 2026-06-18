@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-17T19:51:56.275Z",
+  "generated": "2026-06-18T09:36:43.760Z",
   "bills": [
     {
       "state": "MI",
@@ -21,7 +21,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5262/2025",
-      "updated": "2026-06-17T19:51:53.344Z"
+      "updated": "2026-06-18T09:36:40.369Z"
     },
     {
       "state": "MI",
@@ -43,7 +43,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5278/2025",
-      "updated": "2026-06-17T19:51:53.780Z"
+      "updated": "2026-06-18T09:36:40.859Z"
     },
     {
       "state": "MI",
@@ -65,7 +65,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5279/2025",
-      "updated": "2026-06-17T19:51:54.209Z"
+      "updated": "2026-06-18T09:36:41.351Z"
     },
     {
       "state": "MI",
@@ -87,7 +87,7 @@
       "committee": "Government Operations",
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5280/2025",
-      "updated": "2026-06-17T19:51:54.636Z"
+      "updated": "2026-06-18T09:36:41.830Z"
     },
     {
       "state": "MN",
@@ -109,7 +109,7 @@
       "committee": "Veterans and Military Affairs",
       "state_link": "https://www.revisor.mn.gov/bills/94/2026/0/HF/3911/",
       "legiscan_url": "https://legiscan.com/MN/bill/HF3911/2025",
-      "updated": "2026-06-17T19:51:55.275Z"
+      "updated": "2026-06-18T09:36:42.696Z"
     },
     {
       "state": "PA",
@@ -121,8 +121,8 @@
       "priority": true,
       "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=SB1209",
       "chamber_target": "upper",
-      "email_subject": "Support for SB 1209 — PA Benefit Scam Protection",
-      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for SB 1209, which amends Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes to strengthen protections for veterans seeking help with their benefits claims.\n\nClaim sharks and predatory benefit consultants continue to take advantage of veterans, often charging illegal fees or providing inadequate assistance with VA claims. SB 1209 addresses this by further providing for the Veterans' Trust Fund, supporting grants to veterans' service officer programs, establishing clear standards for veterans' claims assistance, and imposing penalties on bad actors who exploit veterans.\n\nThis bill is an important step toward ensuring Pennsylvania veterans can access trustworthy, accountable help when filing for the benefits they have earned.\n\nI respectfully ask for your support in advancing SB 1209.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
+      "email_subject": "Opposition to SB 1209 — VA Accreditation Requirement Missing",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to express opposition to SB 1209 in its current form, which amends Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes regarding veterans’ claims assistance standards.\n\nWhile the goal of protecting veterans from predatory claims consultants is commendable, SB 1209 falls critically short by failing to require VA accreditation as a condition for providing veterans’ claims assistance. Under Title 38 of the United States Code, individuals who assist veterans with VA benefits claims are required to be accredited by the Department of Veterans Affairs. This federal accreditation standard exists precisely to ensure that those helping veterans are trained, accountable, and subject to oversight.\n\nBy omitting this requirement, SB 1209 would create a parallel state framework that is weaker than existing federal law — potentially enabling unaccredited individuals to operate under a false veneer of state legitimacy while still falling short of the federal protections veterans deserve.\n\nI urge you to amend SB 1209 to explicitly require VA accreditation under 38 USC for anyone providing veterans’ claims assistance in Pennsylvania, bringing the bill into full alignment with federal law before advancing it.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "title": "In State Veterans' Commission and Deputy Adjutant General for Veterans' Affairs, further providing for Veterans' Trust Fund; in veterans' organizations, further providing for grants to veterans' service officer programs and providing for veterans' claims assistance standards; and imposing penalties.",
       "status": 1,
       "status_label": "Introduced",
@@ -131,7 +131,7 @@
       "committee": "Appropriations",
       "state_link": "https://www.palegis.us/legislation/bills/2025/sb1209",
       "legiscan_url": "https://legiscan.com/PA/bill/SB1209/2025",
-      "updated": "2026-06-17T19:51:55.875Z"
+      "updated": "2026-06-18T09:36:43.360Z"
     }
   ]
 }
