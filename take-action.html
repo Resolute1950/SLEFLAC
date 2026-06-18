@@ -19,6 +19,12 @@
   --text: #1e1d1b;
   --radius: 6px;
   --radius-lg: 10px;
+  --support:        #1a6b3c;
+  --support-bg:     #eaf5ef;
+  --support-border: #7dbf99;
+  --oppose:         #8b1a1a;
+  --oppose-bg:      #faeaea;
+  --oppose-border:  #d98080;
 }
 * { box-sizing: border-box; }
 body {
@@ -44,6 +50,30 @@ body {
 .bill-card-code { font-family: Georgia, serif; font-weight: 700; font-size: 16px; color: var(--navy); }
 .bill-card-label { font-weight: 600; font-size: 14px; margin: 2px 0 6px; }
 .bill-card-summary { font-size: 13px; color: var(--gray-500); line-height: 1.5; }
+
+.position-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  padding: 3px 10px; border-radius: 20px; margin-top: 10px;
+}
+.position-badge.support { background: var(--support-bg); color: var(--support); border: 1px solid var(--support-border); }
+.position-badge.oppose  { background: var(--oppose-bg);  color: var(--oppose);  border: 1px solid var(--oppose-border); }
+
+.position-notes {
+  font-size: 12px; color: var(--gray-700); line-height: 1.5;
+  margin-top: 8px; padding: 8px 10px;
+  background: var(--gray-100); border-radius: var(--radius);
+  border-left: 3px solid var(--gray-300);
+}
+.position-notes.oppose { border-left-color: var(--oppose-border); background: var(--oppose-bg); color: var(--oppose); }
+.position-notes.support { border-left-color: var(--support-border); background: var(--support-bg); color: var(--support); }
+
+.letter-context {
+  font-size: 13px; padding: 10px 12px; border-radius: var(--radius);
+  margin-bottom: 10px; font-weight: 600; line-height: 1.4;
+}
+.letter-context.support { background: var(--support-bg); color: var(--support); border: 1px solid var(--support-border); }
+.letter-context.oppose  { background: var(--oppose-bg);  color: var(--oppose);  border: 1px solid var(--oppose-border); }
 
 .step { background: #fff; border: 1.5px solid var(--gray-100); border-radius: var(--radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
 .step-title { font-weight: 700; font-size: 14px; color: var(--navy); margin-bottom: 0.75rem; }
@@ -201,10 +231,19 @@ textarea {
     }
     var color = STATUS_COLORS[bill.status_label] || '#8a8880';
     container.className = 'bill-card' + (bill.priority ? ' priority' : '');
+    var position = (bill.position || 'support').toLowerCase();
+    var isOppose = position === 'oppose';
+    var badgeLabel = isOppose ? '&#9660; Opposed by SLEF' : '&#9650; Supported by SLEF';
+    var notesHtml = '';
+    if (bill.position_notes && bill.position_notes.trim()) {
+      notesHtml = '<div class="position-notes ' + position + '">' + escapeHtml(bill.position_notes.trim()) + '</div>';
+    }
     container.innerHTML =
       '<div class="bill-card-code">' + escapeHtml((bill.state || '') + ' ' + bill.bill_number) + '</div>' +
       '<div class="bill-card-label">' + escapeHtml(bill.label || bill.title || '') + '</div>' +
-      '<div class="bill-card-summary">' + escapeHtml(bill.summary || '') + '</div>';
+      '<div class="bill-card-summary">' + escapeHtml(bill.summary || '') + '</div>' +
+      '<div class="position-badge ' + position + '">' + badgeLabel + '</div>' +
+      notesHtml;
   }
 
   function loadBill() {
@@ -364,6 +403,24 @@ textarea {
   function showDetailsAndEmailSteps() {
     document.getElementById('details-step').classList.remove('hidden');
     document.getElementById('email-step').classList.remove('hidden');
+
+    // Inject position-aware context line above the letter textarea
+    var position = currentBill ? (currentBill.position || 'support').toLowerCase() : 'support';
+    var isOppose = position === 'oppose';
+    var contextEl = document.getElementById('letter-context');
+    if (!contextEl) {
+      contextEl = document.createElement('div');
+      contextEl.id = 'letter-context';
+      contextEl.className = 'letter-context ' + position;
+      var textarea = document.getElementById('email-body');
+      textarea.parentNode.insertBefore(contextEl, textarea);
+    } else {
+      contextEl.className = 'letter-context ' + position;
+    }
+    contextEl.textContent = isOppose
+      ? 'You are writing in opposition to this bill. The letter below urges your legislator to vote no or seek amendments.'
+      : 'You are writing in support of this bill. The letter below urges your legislator to vote yes.';
+
     updateEmailBody();
   }
 
