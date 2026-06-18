@@ -96,10 +96,10 @@ approved suggestion, follow "Adding new bills" below.
 
 Every bill in `tracked-bills.json` must have a `position` field:
 
-- **`"support"`** — the action page shows a green "Supported by SLEF" badge
+- **`"support"`** — the action page shows a green "Supported" badge
   and the email template should be drafted as an advocacy letter urging the
   legislator to vote yes.
-- **`"oppose"`** — the action page shows a red "Opposed by SLEF" badge and
+- **`"oppose"`** — the action page shows a red "Opposed" badge and
   the email template should be drafted as an opposition letter urging the
   legislator to vote no or seek amendments.
 
