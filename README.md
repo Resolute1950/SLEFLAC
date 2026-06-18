@@ -1,15 +1,15 @@
-# SLEFLAC — State Legislative Tracker for Veteran-Related Bills
+# SLEFLAC — SLEF State Legislative Action Center
 
 A national tracker for state-level, veteran-related legislation, built for
 the [State Legislative Exchange Forum (SLEF)](https://www.slef-moaa.com).
 Tracks bill status via the [LegiScan API](https://legiscan.com/legiscan) and
 provides:
 
-- An embeddable widget for Squarespace (`/slac` on self-moaa.com) showing
-  live bill status, grouped by category, with a state selector
+- An embeddable tracker widget for Squarespace showing live bill status,
+  grouped by category, with a dynamic state selector
 - A "Take action" feature that looks up a user's state legislators by ZIP
   code (via the [Open States API](https://open.pluralpolicy.com/)) and
-  generates a pre-filled, editable email in support of a given bill
+  generates a pre-filled, editable advocacy or opposition letter
 - A "Suggest a bill" link so MOAA members can flag new bills for tracking
 
 No API keys are ever exposed to the browser — LegiScan calls happen in
@@ -19,23 +19,35 @@ GitHub Actions, and Open States calls happen in a Cloudflare Worker.
 
 ## How it works
 
+```
+tracked-bills.json          bills.json               take-action.html
+(curated source list)  -->  (live status cache)  -->  (public action page)
+        |                         |
+fetch-bill-status.mjs        worker.js
+(GitHub Actions nightly)     (Cloudflare Worker)
+```
+
 ### 1. Bill status tracking
 
 - **`tracked-bills.json`** — the curated list of bills to track. Each entry
   has `state`, `bill_number`, plus display metadata (`label`, `category`,
-  `chapter`, `summary`, `priority`, `advocacy_url`) and, optionally,
-  take-action fields (`chamber_target`, `email_subject`, `email_template`).
+  `chapter`, `summary`, `priority`, `advocacy_url`, `position`,
+  `position_notes`) and take-action fields (`chamber_target`,
+  `email_subject`, `email_template`).
 
 - **`scripts/fetch-bill-status.mjs`** — reads `tracked-bills.json`, queries
-  LegiScan for each bill's current status (with automatic retry on
-  transient network errors), and writes `bills.json`.
+  LegiScan for each bill's current status (with automatic retry on transient
+  network errors), stamps `final_date` when a bill first reaches a terminal
+  status, prunes expired bills from both JSON files after 30 days, and
+  writes `bills.json`.
 
 - **`.github/workflows/update-bill-status.yml`** — runs the script daily
   (12:00 UTC) and whenever `tracked-bills.json` changes, committing the
   updated `bills.json`.
 
-- **`bills.json`** — served via GitHub Pages, fetched client-side by the
-  Squarespace embed and the take-action page.
+- **`bills.json`** — auto-generated output served via GitHub Pages, fetched
+  client-side by the Squarespace embed and the take-action page. Do not
+  edit manually.
 
 ### 2. Tracker widget
 
@@ -46,8 +58,9 @@ GitHub Actions, and Open States calls happen in a Cloudflare Worker.
     `state` values in `bills.json` — new states appear automatically as
     bills are added, no embed changes needed
   - Bills for the selected state, grouped by `category`, as full-width rows
-    with a live status badge, last-action summary, and a "Take action" button
-  - A **"Suggest a bill"** footer link (see below)
+    with a live status badge, position badge, last-action summary, and a
+    "Take action" button
+  - A **"Suggest a bill"** footer link
 
 ### 3. Take action (contact your legislator)
 
@@ -57,11 +70,12 @@ GitHub Actions, and Open States calls happen in a Cloudflare Worker.
   1. Enter ZIP code
   2. Select their state legislator (filtered by the bill's `chamber_target`)
   3. Enter their name and city
-  4. Review/edit a pre-filled email, then send via `mailto:` or copy the text
+  4. Review/edit a pre-filled letter — framed as advocacy or opposition
+     depending on the bill's `position` — then send via `mailto:` or copy
 
-- **`worker/worker.js`** — Cloudflare Worker that the take-action page calls
-  for the ZIP → legislator lookup. It:
-  1. Geocodes the ZIP via Zippopotam.us (free, no key)
+- **`worker.js`** — Cloudflare Worker that the take-action page calls for
+  the ZIP → legislator lookup. It:
+  1. Geocodes the ZIP via Zippopotam.us (free, no key required)
   2. Calls Open States `/people.geo` with the resulting lat/lng, using
      `OPENSTATES_API_KEY` (stored as a Worker secret — never sent to the browser)
   3. Filters out federal Congress members, returning only state legislators
@@ -72,42 +86,82 @@ GitHub Actions, and Open States calls happen in a Cloudflare Worker.
 
 ### 4. Suggest a bill
 
-The tracker footer includes a "Suggest a bill" link — a `mailto:` to
-`team@slef-moaa.com` with a pre-filled template (state, bill number, title,
-category, summary, why it matters, priority, submitter name/chapter). No
-form, no password — submissions arrive as email for manual review. To add
-an approved suggestion, follow "Adding new bills" below.
+The tracker footer includes a "Suggest a bill" link to the SLEF Google Form.
+Responses are emailed to `Team@slef-moaa.com` for C-Chair review. To add an
+approved suggestion, follow "Adding new bills" below.
+
+---
+
+## Bill positions
+
+Every bill in `tracked-bills.json` must have a `position` field:
+
+- **`"support"`** — the action page shows a green "Supported by SLEF" badge
+  and the email template should be drafted as an advocacy letter urging the
+  legislator to vote yes.
+- **`"oppose"`** — the action page shows a red "Opposed by SLEF" badge and
+  the email template should be drafted as an opposition letter urging the
+  legislator to vote no or seek amendments.
+
+If `position_notes` is provided (e.g. `"Bill does not require VA
+accreditation contrary to USC Title 38"`), it appears on the action page
+below the badge so members understand the reasoning before sending a letter.
+
+Write the `email_template` to match the position — the page also displays a
+one-line context banner ("You are writing in opposition to this bill...")
+above the editable textarea.
+
+---
+
+## Bill expiry (automatic)
+
+`fetch-bill-status.mjs` manages the full bill lifecycle automatically:
+
+| Stage | What happens |
+|---|---|
+| Bill reaches `Passed`, `Vetoed`, or `Failed / Dead` | Script stamps `final_date` (today) in `tracked-bills.json`. Bill stays visible. |
+| Days 1–29 after `final_date` | Bill continues to appear in `bills.json` and on the action page. |
+| Day 30+ after `final_date` | Bill is removed from `bills.json` and pruned from `tracked-bills.json`. LegiScan fetches stop. |
+
+To change the window, update `EXPIRY_DAYS` near the top of
+`fetch-bill-status.mjs`.
 
 ---
 
 ## Setup
 
 ### 1. Add the LegiScan API key as a repo secret
+
 Settings → Secrets and variables → Actions → New repository secret
 - Name: `LEGISCAN_API_KEY`
 - Value: your free LegiScan API key (https://legiscan.com/legiscan)
 
 ### 2. Enable GitHub Pages
+
 Settings → Pages → Source: Deploy from a branch → `main` / `(root)`
 
 ### 3. Run the workflow once manually
+
 Actions tab → "Update Bill Status" → Run workflow
 
 ### 4. Confirm `bills.json` is live
+
 Visit `https://<your-username>.github.io/SLEFLAC/bills.json` — should
 return JSON with current bill statuses.
 
-### 5. Add the tracker to self-moaa.com
+### 5. Add the tracker to slef-moaa.com
+
 In Squarespace: edit the `/slac` page → add a **Code Block** in a
 full-width section → paste the contents of `squarespace-embed-v2.html` →
 save.
 
 If your GitHub username/org or repo name differs from `Resolute1950/SLEFLAC`,
 update `DATA_URL` near the top of the `<script>` in both
-`squarespace-embed-v2.html` and `take-action.html`, and `TAKE_ACTION_BASE` in
-`squarespace-embed-v2.html`.
+`squarespace-embed-v2.html` and `take-action.html`, and `TAKE_ACTION_BASE`
+in `squarespace-embed-v2.html`.
 
 ### 6. Set up the Take Action feature
+
 See **`TAKE_ACTION_SETUP.md`** for deploying the Cloudflare Worker, getting
 an Open States API key, and wiring the Worker URL into `take-action.html`.
 
@@ -126,8 +180,10 @@ Edit `tracked-bills.json` and add a new entry to the `bills` array:
   "chapter": "Which MOAA chapter/council is tracking this",
   "summary": "1-2 sentence plain-language summary",
   "priority": false,
-  "advocacy_url": "https://link-to-fallback-take-action-page",
+  "advocacy_url": "https://link-to-take-action-page",
   "chamber_target": "lower",
+  "position": "support",
+  "position_notes": "Optional — why your chapter supports or opposes this bill.",
   "email_subject": "Support for HB 123 — Short Description",
   "email_template": "Dear [LEGISLATOR_NAME],\n\n...\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]"
 }
@@ -138,33 +194,96 @@ Field notes:
 - `state` — 2-letter postal code (used for both LegiScan and Open States)
 - `bill_number` — must match LegiScan's format (e.g. `HB123`, `SB45`, no space)
 - `category` — bills are grouped under this heading on the tracker; a new
-  category creates a new section automatically
+  category creates a new section automatically, no embed changes needed
 - `chamber_target` — `"lower"` (House/Assembly), `"upper"` (Senate), or
-  `"both"`. Determines which legislators from the ZIP lookup are offered as
-  recipients on the take-action page
+  `"both"`. Determines which legislators are shown on the take-action page
+- `position` — required; must be `"support"` or `"oppose"`
+- `position_notes` — optional; displayed on the action page and useful for
+  opposition bills (e.g. cite the specific federal law conflict or amendment sought)
 - `email_subject` / `email_template` — required for the take-action page to
-  work for this bill. If omitted, "Take action" falls back to `advocacy_url`
-  (or shows no button if that's also missing)
+  work. If omitted, "Take action" falls back to `advocacy_url` (or shows no
+  button if that is also missing)
 - `email_template` placeholders: `[LEGISLATOR_NAME]`, `[FULL_NAME]`,
   `[CITY]`, `[STATE]`, `[CHAPTER]`
+- `final_date` — do not set manually; stamped automatically by
+  `fetch-bill-status.mjs` when the bill first reaches a terminal status
 
 Commit the change — the workflow runs automatically on push to
 `tracked-bills.json` and will populate status for the new bill within a
-minute or two. Adding a bill from a new state automatically adds a new pill
-to the tracker's state selector — no embed changes needed.
+minute or two. Adding a bill from a new state automatically adds a new state
+pill to the tracker widget — no embed changes needed.
 
 ---
 
-## Notes on API usage
+## Data schema reference
 
-- **LegiScan**: free Public API allows 30,000 queries/month. Each state with
-  tracked bills costs 2 queries (session lookup + master list) plus 1 query
-  per bill, run once daily. With a handful of states and bills this is well
-  under 1,000 queries/month.
-- **Open States**: free tier should comfortably handle per-user take-action
-  lookups for a small-to-medium campaign. ZIP-based lookups use the ZIP's
-  geographic centroid, which is accurate for the large majority of addresses
-  but can occasionally return a neighboring district near boundaries.
-- **Email coverage** for state legislators varies — some don't have an email
-  on file in Open States. The take-action page falls back to the
-  legislator's contact page in that case.
+### `tracked-bills.json` fields
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `state` | string | ✓ | 2-letter postal code |
+| `bill_number` | string | ✓ | LegiScan-format bill number |
+| `label` | string | ✓ | Short display title |
+| `category` | string | ✓ | Grouping heading on the tracker |
+| `chapter` | string | ✓ | Submitting MOAA chapter or council |
+| `summary` | string | ✓ | 1–2 sentence plain-language description |
+| `priority` | boolean | ✓ | `true` highlights the bill in the tracker |
+| `advocacy_url` | string | | Fallback Take Action URL |
+| `chamber_target` | string | ✓ | `"lower"`, `"upper"`, or `"both"` |
+| `position` | string | ✓ | `"support"` or `"oppose"` |
+| `position_notes` | string | | Rationale displayed on the action page |
+| `email_subject` | string | | Pre-filled email subject line |
+| `email_template` | string | | Full letter text with placeholders |
+| `final_date` | string | auto | `YYYY-MM-DD` — set automatically; do not edit |
+
+### `bills.json` additional fields (auto-generated)
+
+| Field | Source |
+|---|---|
+| `title` | LegiScan full bill title |
+| `status` | LegiScan numeric status code |
+| `status_label` | `Introduced`, `Engrossed`, `Enrolled`, `Passed`, `Vetoed`, `Failed / Dead` |
+| `last_action_date` | Date of most recent legislative action |
+| `last_action` | Text of most recent action |
+| `committee` | Current committee name |
+| `state_link` | Official state legislature URL |
+| `legiscan_url` | LegiScan bill page URL |
+| `updated` | ISO timestamp of last sync |
+
+---
+
+## LegiScan status codes
+
+| Code | Label | Terminal? |
+|---|---|---|
+| 0 | Pending | |
+| 1 | Introduced | |
+| 2 | Engrossed | |
+| 3 | Enrolled | |
+| 4 | Passed | ✓ |
+| 5 | Vetoed | ✓ |
+| 6 | Failed / Dead | ✓ |
+
+Terminal statuses trigger the 30-day expiry clock. The list is defined in
+`FINAL_STATUSES` in `fetch-bill-status.mjs`.
+
+---
+
+## API usage notes
+
+- **LegiScan** — free Public API allows 30,000 queries/month. Each state
+  costs 2 queries (session lookup + master list) plus 1 per bill, run once
+  daily. A handful of states and bills stays well under 1,000 queries/month.
+- **Open States** — free tier handles per-user take-action lookups
+  comfortably for a small-to-medium campaign. ZIP lookups use the ZIP's
+  geographic centroid, which is accurate for most addresses but can
+  occasionally return a neighboring district near boundaries.
+- **Email coverage** — some state legislators don't have an email address on
+  file in Open States. The take-action page falls back to the legislator's
+  contact page URL in that case.
+
+---
+
+## Contact
+
+Questions or bill submissions: **Team@slef-moaa.com**
