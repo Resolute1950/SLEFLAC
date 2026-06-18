@@ -90,6 +90,36 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to express opposition to SB 1209 in its current form, which amends Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes regarding veterans’ claims assistance standards.\n\nWhile the goal of protecting veterans from predatory claims consultants is commendable, SB 1209 falls critically short by failing to require VA accreditation as a condition for providing veterans’ claims assistance. Under Title 38 of the United States Code, individuals who assist veterans with VA benefits claims are required to be accredited by the Department of Veterans Affairs. This federal accreditation standard exists precisely to ensure that those helping veterans are trained, accountable, and subject to oversight.\n\nBy omitting this requirement, SB 1209 would create a parallel state framework that is weaker than existing federal law — potentially enabling unaccredited individuals to operate under a false veneer of state legitimacy while still falling short of the federal protections veterans deserve.\n\nI urge you to amend SB 1209 to explicitly require VA accreditation under 38 USC for anyone providing veterans’ claims assistance in Pennsylvania, bringing the bill into full alignment with federal law before advancing it.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "position": "oppose",
       "position_notes": "Bill does not require VA accreditation contrary to USC Title 38"
+    },
+    {
+      "state": "PA",
+      "bill_number": "HB1918",
+      "label": "Prohibiting Compensation for Veterans' Benefits Assistance",
+      "category": "Benefits",
+      "chapter": "Cumberland Valley (PA) Chapter",
+      "summary": "Amends Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes to prohibit charging veterans for benefits claims assistance, except as permitted under federal law, mirroring the proposed federal GUARD VA Benefits Act.",
+      "priority": true,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HB1918",
+      "chamber_target": "both",
+      "position": "support",
+      "position_notes": "",
+      "email_subject": "Support for HB 1918 — Prohibiting Predatory Fees for Veterans’ Benefits Assistance",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HB 1918, which would amend Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes to prohibit the charging of fees for veterans’ benefits claims assistance, except as expressly permitted under federal law.\n\nVeterans often face significant challenges when applying for the benefits they have earned through their service and sacrifice. Unfortunately, their need for assistance makes them vulnerable to “claim sharks” — unaccredited individuals and organizations that charge excessive fees and engage in predatory practices to exploit veterans’ trust. These bad actors do not adhere to the professional standards required of VA-accredited representatives, leaving veterans worse off than before.\n\nHB 1918 mirrors the proposed federal GUARD VA Benefits Act and would ensure that Pennsylvania veterans can access the benefits they have rightfully earned without fear of being taken advantage of. I respectfully ask for your support in advancing this bill.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]"
+    },
+    {
+      "state": "PA",
+      "bill_number": "HB1177",
+      "label": "Income Tax Relief for USPHS and NOAA Officers on Active Duty",
+      "category": "Taxes",
+      "chapter": "Cumberland Valley (PA) Chapter",
+      "summary": "Amends the Tax Reform Code of 1971 to extend Pennsylvania income tax relief to USPHS and NOAA commissioned officers while on active duty or active-duty orders outside Pennsylvania, consistent with the exemption already provided to Armed Forces members.",
+      "priority": true,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=HB1177",
+      "chamber_target": "both",
+      "position": "support",
+      "position_notes": "",
+      "email_subject": "Support for HB 1177 — Income Tax Relief for USPHS & NOAA Officers",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HB 1177, which would amend the Tax Reform Code of 1971 to extend Pennsylvania income tax relief to commissioned officers of the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) while serving on active duty or active-duty orders outside Pennsylvania.\n\nBoth USPHS and NOAA serve vital roles for our nation’s health and well-being. Their officers routinely go into harm’s way in service to our country, just as members of the Armed Forces do. Yet while Pennsylvania exempts Armed Forces income from state income tax, USPHS and NOAA officers’ income remains taxable — an inequity that HB 1177 would correct.\n\nThis is a straightforward matter of equal treatment for those who serve in uniform. I respectfully ask for your support in advancing HB 1177.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]"
     }
   ]
 }
