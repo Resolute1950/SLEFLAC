@@ -102,9 +102,23 @@ const STATUS_LABELS = {
   6: "Failed / Dead",
 };
 
+// Status labels considered terminal — bill will be removed from bills.json
+// 30 days after first reaching one of these states.
+const FINAL_STATUSES = new Set(["Passed", "Vetoed", "Failed / Dead"]);
+const EXPIRY_DAYS = 30;
+
 function simplifyBill(bill, meta) {
   const history = bill.history || [];
   const lastAction = history.length ? history[history.length - 1] : null;
+  const statusLabel = STATUS_LABELS[bill.status] || "Unknown";
+
+  // Stamp final_date the first time a bill reaches a terminal status.
+  // Once set, never overwrite it — the 30-day expiry clock starts here.
+  let finalDate = meta.final_date || null;
+  if (FINAL_STATUSES.has(statusLabel) && !finalDate) {
+    finalDate = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    console.log(`  [${meta.state}] ${bill.bill_number} reached final status "${statusLabel}" — stamping final_date ${finalDate}`);
+  }
 
   return {
     state: meta.state,
@@ -116,16 +130,19 @@ function simplifyBill(bill, meta) {
     priority: !!meta.priority,
     advocacy_url: meta.advocacy_url || null,
     chamber_target: meta.chamber_target || 'both',
+    position: meta.position || 'support',
+    position_notes: meta.position_notes || '',
     email_subject: meta.email_subject || null,
     email_template: meta.email_template || null,
     title: bill.title,
     status: bill.status,
-    status_label: STATUS_LABELS[bill.status] || "Unknown",
+    status_label: statusLabel,
     last_action_date: lastAction ? lastAction.date : null,
     last_action: lastAction ? lastAction.action : null,
     committee: bill.committee ? bill.committee.name : null,
     state_link: bill.state_link,
     legiscan_url: bill.url,
+    final_date: finalDate,
     updated: new Date().toISOString(),
   };
 }
@@ -198,13 +215,76 @@ async function main() {
     }
   }
 
+  // Remove bills that reached a final status more than EXPIRY_DAYS ago.
+  const now = Date.now();
+  const activeBills = results.filter((b) => {
+    if (!b.final_date) return true; // not final yet — keep
+    const finalMs = new Date(b.final_date).getTime();
+    const ageDays = (now - finalMs) / (1000 * 60 * 60 * 24);
+    if (ageDays > EXPIRY_DAYS) {
+      console.log(`  Removing ${b.state} ${b.bill_number} — final_date ${b.final_date} is ${Math.floor(ageDays)} days ago (>${EXPIRY_DAYS}-day limit)`);
+      return false;
+    }
+    return true;
+  });
+
+  const removed = results.length - activeBills.length;
+  if (removed > 0) {
+    console.log(`Removed ${removed} expired bill(s) from output.`);
+  }
+
+  // Build a set of bill keys still active so we can prune tracked-bills.json
+  // to match. A bill is pruned when it has been removed from activeBills —
+  // i.e. its final_date is older than EXPIRY_DAYS. This stops the script
+  // fetching it from LegiScan on future runs.
+  const activeKeys = new Set(
+    activeBills.map((b) => `${b.state.toUpperCase()}:${b.bill_number.replace(/\s+/g, "").toUpperCase()}`)
+  );
+
+  const remainingTracked = trackedBills.filter((b) => {
+    const key = `${(b.state || "").toUpperCase()}:${(b.bill_number || "").replace(/\s+/g, "").toUpperCase()}`;
+    if (!activeKeys.has(key)) {
+      console.log(`  Pruning ${b.state} ${b.bill_number} from ${TRACKED_BILLS_FILE}`);
+      return false;
+    }
+    return true;
+  });
+
+  // Also carry final_date back into tracked-bills.json so the expiry clock
+  // survives across runs even before the bill is pruned.
+  const finalDateMap = {};
+  for (const b of results) {
+    if (b.final_date) {
+      const key = `${b.state.toUpperCase()}:${b.bill_number.replace(/\s+/g, "").toUpperCase()}`;
+      finalDateMap[key] = b.final_date;
+    }
+  }
+  for (const b of remainingTracked) {
+    const key = `${(b.state || "").toUpperCase()}:${(b.bill_number || "").replace(/\s+/g, "").toUpperCase()}`;
+    if (finalDateMap[key] && !b.final_date) {
+      b.final_date = finalDateMap[key];
+    }
+  }
+
+  const trackedPruned = remainingTracked.length < trackedBills.length;
+  if (trackedPruned) {
+    const updatedTracked = { ...tracked, bills: remainingTracked };
+    await fs.writeFile(TRACKED_BILLS_FILE, JSON.stringify(updatedTracked, null, 2));
+    console.log(`Updated ${TRACKED_BILLS_FILE}: ${remainingTracked.length} bill(s) remaining (${trackedBills.length - remainingTracked.length} pruned)`);
+  } else if (Object.keys(finalDateMap).length > 0) {
+    // No pruning, but final_dates may have been stamped — write back to preserve them
+    const updatedTracked = { ...tracked, bills: remainingTracked };
+    await fs.writeFile(TRACKED_BILLS_FILE, JSON.stringify(updatedTracked, null, 2));
+    console.log(`Updated ${TRACKED_BILLS_FILE}: final_date stamped on newly finalised bill(s)`);
+  }
+
   const output = {
     generated: new Date().toISOString(),
-    bills: results,
+    bills: activeBills,
   };
 
   await fs.writeFile(OUTPUT_FILE, JSON.stringify(output, null, 2));
-  console.log(`Wrote ${OUTPUT_FILE} with ${results.length} bill(s)`);
+  console.log(`Wrote ${OUTPUT_FILE} with ${activeBills.length} bill(s)`);
 }
 
 main().catch((err) => {
