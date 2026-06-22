@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-21T17:12:15.486Z",
+  "generated": "2026-06-22T21:34:41.273Z",
   "bills": [
     {
       "state": "MI",
@@ -24,7 +24,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5262/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:11.418Z"
+      "updated": "2026-06-22T21:34:37.257Z"
     },
     {
       "state": "MI",
@@ -49,7 +49,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5278/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:11.870Z"
+      "updated": "2026-06-22T21:34:37.721Z"
     },
     {
       "state": "MI",
@@ -74,7 +74,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5279/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:12.334Z"
+      "updated": "2026-06-22T21:34:38.180Z"
     },
     {
       "state": "MI",
@@ -99,7 +99,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "legiscan_url": "https://legiscan.com/MI/bill/HB5280/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:12.798Z"
+      "updated": "2026-06-22T21:34:38.635Z"
     },
     {
       "state": "MN",
@@ -124,7 +124,7 @@
       "state_link": "https://www.revisor.mn.gov/bills/94/2026/0/HF/3911/",
       "legiscan_url": "https://legiscan.com/MN/bill/HF3911/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:13.521Z"
+      "updated": "2026-06-22T21:34:39.324Z"
     },
     {
       "state": "PA",
@@ -149,7 +149,7 @@
       "state_link": "https://www.palegis.us/legislation/bills/2025/sb1209",
       "legiscan_url": "https://legiscan.com/PA/bill/SB1209/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:14.172Z"
+      "updated": "2026-06-22T21:34:39.953Z"
     },
     {
       "state": "PA",
@@ -174,7 +174,7 @@
       "state_link": "https://www.palegis.us/legislation/bills/2025/hb1918",
       "legiscan_url": "https://legiscan.com/PA/bill/HB1918/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:14.623Z"
+      "updated": "2026-06-22T21:34:40.404Z"
     },
     {
       "state": "PA",
@@ -199,7 +199,7 @@
       "state_link": "https://www.palegis.us/legislation/bills/2025/hb1177",
       "legiscan_url": "https://legiscan.com/PA/bill/HB1177/2025",
       "final_date": null,
-      "updated": "2026-06-21T17:12:15.085Z"
+      "updated": "2026-06-22T21:34:40.873Z"
     }
   ]
 }
