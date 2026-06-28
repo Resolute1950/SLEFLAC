@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SLEFLAC Campaign Metrics</title>
+<script src="https://cdn.jsdelivr.net/npm/gridjs@5.0.2/dist/gridjs.umd.js" integrity="sha384-/XXDzxe4FsGiAe50i/u9pY/Vy/uX654MHB1xoc1BJNnH1WXHhqHga9g3q5tF4gj7" crossorigin="anonymous"></script>
+<style>
+:root { color-scheme: light; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  background: #f5f4f0;
+  color: #1e1d1b;
+  font-size: 14px;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.header {
+  background: #1a2d4f;
+  border-bottom: 3px solid #b8912a;
+  padding: 16px 20px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.header-left {}
+.header-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #c9a84c;
+  margin: 0 0 3px;
+}
+.header h1 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #b8912a;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+.refresh-btn:hover { background: #a07820; }
+.refresh-btn:disabled { background: #8a8880; cursor: not-allowed; }
+
+/* ── Stats bar ───────────────────────────────────────── */
+.stats-bar {
+  display: flex;
+  gap: 0;
+  background: #fff;
+  border-bottom: 1.5px solid #e8e6e0;
+  flex-wrap: wrap;
+}
+.stat {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 20px;
+  border-right: 1.5px solid #e8e6e0;
+  text-align: center;
+}
+.stat:last-child { border-right: none; }
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a2d4f;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.stat-label {
+  font-size: 11px;
+  color: #8a8880;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── Controls ────────────────────────────────────────── */
+.controls {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  background: #f5f4f0;
+  border-bottom: 1px solid #e8e6e0;
+}
+.controls-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8a8880;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-right: 4px;
+}
+.filter-btn {
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1.5px solid #c8c6bf;
+  background: #fff;
+  color: #4a4845;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.12s, background 0.12s, color 0.12s;
+}
+.filter-btn:hover { border-color: #1a2d4f; color: #1a2d4f; }
+.filter-btn.active {
+  background: #1a2d4f;
+  border-color: #1a2d4f;
+  color: #fff;
+}
+
+/* ── Status / notice messages ────────────────────────── */
+.notice {
+  margin: 16px 20px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.notice.loading { background: #eef1f8; color: #1a2d4f; }
+.notice.error   { background: #faeaea; color: #8b1a1a; }
+.notice.warn    { background: #fff8e6; color: #7a5c00; border: 1px solid #f0d060; }
+
+/* ── Table container ─────────────────────────────────── */
+.table-wrap {
+  padding: 0 20px 24px;
+}
+
+/* ── Grid.js overrides ───────────────────────────────── */
+.gridjs-wrapper {
+  border: 1.5px solid #e8e6e0 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+.gridjs-container { background: #fff !important; }
+.gridjs-head .gridjs-search { display: none; }
+th.gridjs-th {
+  background: #f0efe9 !important;
+  color: #1a2d4f !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.07em !important;
+  text-transform: uppercase !important;
+  border-bottom: 2px solid #c8c6bf !important;
+  padding: 10px 12px !important;
+  white-space: nowrap;
+}
+td.gridjs-td {
+  padding: 9px 12px !important;
+  font-size: 13px !important;
+  border-bottom: 1px solid #f0efe9 !important;
+  vertical-align: middle !important;
+}
+tr.gridjs-tr:last-child td { border-bottom: none !important; }
+tr.gridjs-tr:hover td { background: #faf9f5 !important; }
+.gridjs-sort { color: #b8912a !important; }
+.gridjs-sort-neutral::after { border-top-color: #c8c6bf !important; border-bottom-color: #c8c6bf !important; }
+.gridjs-pagination { padding: 10px 12px !important; border-top: 1.5px solid #e8e6e0 !important; }
+.gridjs-pages button { font-family: inherit !important; }
+.gridjs-pages button.gridjs-currentPage { background: #1a2d4f !important; color: #fff !important; border-color: #1a2d4f !important; }
+
+/* ── Inline cell components ──────────────────────────── */
+.bill-code { font-family: Georgia, serif; font-weight: 700; color: #1a2d4f; }
+.bill-link { color: #1a2d4f; text-decoration: none; font-size: 11px; }
+.bill-link:hover { text-decoration: underline; }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+.badge-support { background: #eaf5ef; color: #1a6b3c; border: 1px solid #7dbf99; }
+.badge-oppose  { background: #faeaea; color: #8b1a1a; border: 1px solid #d98080; }
+.badge-priority { background: #b8912a; color: #fff; }
+.badge-status  { background: #eef1f8; color: #1a2d4f; border: 1px solid #b0bcd4; }
+.click-count {
+  font-weight: 700;
+  font-size: 15px;
+  color: #1a2d4f;
+  text-align: right;
+  display: block;
+}
+.click-count.zero { color: #c8c6bf; font-weight: 400; }
+.click-bar-wrap { display: flex; align-items: center; gap: 8px; }
+.click-bar {
+  flex: 1;
+  height: 6px;
+  background: #e8e6e0;
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 40px;
+}
+.click-bar-fill { height: 100%; background: #b8912a; border-radius: 3px; transition: width 0.3s; }
+
+/* ── Footer ──────────────────────────────────────────── */
+.footer {
+  padding: 10px 20px 16px;
+  font-size: 11px;
+  color: #8a8880;
+  border-top: 1px solid #e8e6e0;
+  margin-top: 4px;
+}
+.no-counts-warn {
+  display: inline-block;
+  margin-left: 8px;
+  background: #fff8e6;
+  color: #7a5c00;
+  border: 1px solid #f0d060;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="header-eyebrow">SLEF MOAA · Legislative Action</div>
+    <h1>Campaign Metrics</h1>
+  </div>
+  <button class="refresh-btn" id="refresh-btn" onclick="loadData()">&#8635; Refresh</button>
+</div>
+
+<!-- Stats bar -->
+<div class="stats-bar" id="stats-bar">
+  <div class="stat"><div class="stat-value" id="stat-bills">—</div><div class="stat-label">Bills tracked</div></div>
+  <div class="stat"><div class="stat-value" id="stat-clicks">—</div><div class="stat-label">Total actions</div></div>
+  <div class="stat"><div class="stat-value" id="stat-active">—</div><div class="stat-label">Bills with activity</div></div>
+  <div class="stat"><div class="stat-value" id="stat-updated">—</div><div class="stat-label">Data as of</div></div>
+</div>
+
+<!-- State filter -->
+<div class="controls" id="controls" style="display:none;">
+  <span class="controls-label">State</span>
+  <div id="state-filters"></div>
+</div>
+
+<!-- Notices -->
+<div id="notice-area"></div>
+
+<!-- Table -->
+<div class="table-wrap" id="table-wrap"></div>
+
+<!-- Footer -->
+<div class="footer" id="footer" style="display:none;">
+  Click counts record members who clicked "Open in email app" on the Take Action page.
+  <span id="no-counts-msg" class="no-counts-warn" style="display:none;">
+    ⚠ Click counting not yet active — deploy updated worker.js with KV binding to enable.
+  </span>
+</div>
+
+<script>
+(function () {
+  var BILLS_URL  = 'https://resolute1950.github.io/SLEFLAC/bills.json';
+  var COUNTS_URL = 'https://sleflac-legislator-lookup.rlhigginsjr.workers.dev/counts';
+
+  var grid = null;
+  var allRows = [];
+  var activeState = 'ALL';
+
+  // ── Fetch helpers ─────────────────────────────────────
+  function extractJson(raw) {
+    // web_fetch prepends URL + headers; JSON starts at first { or [
+    var idx = raw.search(/[{[]/);
+    if (idx < 0) throw new Error('No JSON found in response');
+    return JSON.parse(raw.slice(idx));
+  }
+
+  async function fetchUrl(url) {
+    var r = await window.cowork.callMcpTool('mcp__workspace__web_fetch', { url: url });
+    if (r.isError) throw new Error('Fetch error for ' + url);
+    var text = r.structuredContent != null
+      ? (typeof r.structuredContent === 'string' ? r.structuredContent : JSON.stringify(r.structuredContent))
+      : (r.content && r.content[0] ? r.content[0].text : '');
+    return text;
+  }
+
+  // ── UI helpers ────────────────────────────────────────
+  function setNotice(msg, type) {
+    var el = document.getElementById('notice-area');
+    if (!msg) { el.innerHTML = ''; return; }
+    el.innerHTML = '<div class="notice ' + (type || 'loading') + '">' + msg + '</div>';
+  }
+
+  function setRefreshing(on) {
+    var btn = document.getElementById('refresh-btn');
+    btn.disabled = on;
+    btn.textContent = on ? '⟳ Loading…' : '↺ Refresh';
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    try {
+      return new Date(iso).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' });
+    } catch (_) { return iso; }
+  }
+
+  // ── Build state filter buttons ────────────────────────
+  function buildStateFilters(bills) {
+    var states = ['ALL'].concat([...new Set(bills.map(function (b) { return b.state; }))].sort());
+    var wrap = document.getElementById('state-filters');
+    wrap.innerHTML = '';
+    states.forEach(function (s) {
+      var btn = document.createElement('button');
+      btn.className = 'filter-btn' + (s === activeState ? ' active' : '');
+      btn.textContent = s;
+      btn.onclick = function () {
+        activeState = s;
+        document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderGrid(s === 'ALL' ? allRows : allRows.filter(function (r) { return r[0] === s; }));
+      };
+      wrap.appendChild(btn);
+    });
+    document.getElementById('controls').style.display = '';
+  }
+
+  // ── Build Grid.js rows ────────────────────────────────
+  function buildRows(bills, counts, maxClicks) {
+    return bills.map(function (b) {
+      var key = (b.state + ':' + b.bill_number.replace(/\s+/g, '')).toUpperCase();
+      var clicks = counts[key] || 0;
+      var pct = maxClicks > 0 ? Math.round((clicks / maxClicks) * 100) : 0;
+      return [
+        b.state,                          // [0] state (for filtering, hidden)
+        b.state + ' ' + b.bill_number,    // [1] bill code
+        b.label || '',                     // [2] label
+        b.category || '',                  // [3] category
+        b.status_label || '',              // [4] status
+        b.position || 'support',           // [5] position
+        b.priority ? 1 : 0,               // [6] priority (numeric for sort)
+        clicks,                            // [7] clicks (numeric for sort)
+        pct,                               // [8] bar pct
+        b.state_link || '',               // [9] link
+      ];
+    });
+  }
+
+  // ── Render / update Grid.js ───────────────────────────
+  function renderGrid(rows) {
+    var wrap = document.getElementById('table-wrap');
+
+    var data = rows.map(function (r) {
+      var isOppose = r[5] === 'oppose';
+      var clicksHtml = r[8] > 0
+        ? '<div class="click-bar-wrap">'
+            + '<span class="click-count">' + r[7] + '</span>'
+            + '<div class="click-bar"><div class="click-bar-fill" style="width:' + r[8] + '%"></div></div>'
+          + '</div>'
+        : '<span class="click-count zero">0</span>';
+
+      var billHtml = r[9]
+        ? '<span class="bill-code">' + esc(r[1]) + '</span>'
+          + '<br><a class="bill-link" href="' + esc(r[9]) + '" target="_blank" rel="noopener">View bill ↗</a>'
+        : '<span class="bill-code">' + esc(r[1]) + '</span>';
+
+      return [
+        gridjs.html(billHtml),
+        r[2],
+        r[3],
+        gridjs.html('<span class="badge badge-status">' + esc(r[4]) + '</span>'),
+        gridjs.html('<span class="badge ' + (isOppose ? 'badge-oppose' : 'badge-support') + '">'
+          + (isOppose ? '▼ Oppose' : '▲ Support') + '</span>'),
+        gridjs.html(r[6] ? '<span class="badge badge-priority">★ Priority</span>' : '<span style="color:#c8c6bf">—</span>'),
+        gridjs.html(clicksHtml),
+        r[7], // raw number for sort
+      ];
+    });
+
+    if (grid) {
+      grid.updateConfig({ data: data }).forceRender();
+      return;
+    }
+
+    grid = new gridjs.Grid({
+      columns: [
+        { name: 'Bill', sort: { compare: function(a, b) {
+            var ta = a.props && a.props.dangerouslySetInnerHTML ? a.props.dangerouslySetInnerHTML.__html : String(a);
+            var tb = b.props && b.props.dangerouslySetInnerHTML ? b.props.dangerouslySetInnerHTML.__html : String(b);
+            return ta.localeCompare(tb);
+          }}
+        },
+        { name: 'Label' },
+        { name: 'Category' },
+        { name: 'Status' },
+        { name: 'Position' },
+        { name: 'Priority', sort: { compare: function(a, b) {
+            // sort ★ Priority before —
+            var av = a && a.props ? (String(a.props.dangerouslySetInnerHTML.__html).includes('Priority') ? 1 : 0) : 0;
+            var bv = b && b.props ? (String(b.props.dangerouslySetInnerHTML.__html).includes('Priority') ? 1 : 0) : 0;
+            return bv - av;
+          }}
+        },
+        { name: 'Actions', sort: { compare: function(a, b) {
+            // sort by raw count column hidden alongside
+            return 0; // fallback; actual sort on hidden col below
+          }}
+        },
+        { name: '_clicks', hidden: true },
+      ],
+      data: data,
+      sort: { enabled: true, multiColumn: false },
+      pagination: { enabled: rows.length > 20, limit: 20 },
+      style: {
+        table: { 'font-family': '-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif' },
+      },
+      language: { search: { placeholder: 'Search bills…' } },
+    });
+
+    // Sort by actions desc on load — reorder data
+    var sorted = data.slice().sort(function (a, b) { return b[7] - a[7]; });
+    grid.updateConfig({ data: sorted }).render(wrap);
+  }
+
+  // ── Update stat bar ───────────────────────────────────
+  function updateStats(bills, counts, generated, countsAvailable) {
+    var total = bills.length;
+    var totalClicks = Object.values(counts).reduce(function (s, n) { return s + n; }, 0);
+    var withActivity = Object.values(counts).filter(function (n) { return n > 0; }).length;
+
+    document.getElementById('stat-bills').textContent   = total;
+    document.getElementById('stat-clicks').textContent  = countsAvailable ? totalClicks : '—';
+    document.getElementById('stat-active').textContent  = countsAvailable ? withActivity : '—';
+    document.getElementById('stat-updated').textContent = fmtDate(generated).split(',')[0]; // just date
+
+    document.getElementById('footer').style.display = '';
+    document.getElementById('no-counts-msg').style.display = countsAvailable ? 'none' : '';
+  }
+
+  // ── Escape HTML ───────────────────────────────────────
+  function esc(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
+  // ── Main load ─────────────────────────────────────────
+  window.loadData = async function () {
+    setRefreshing(true);
+    setNotice('Loading bills and action counts…', 'loading');
+    grid = null;
+
+    try {
+      // Fetch bills (required) and counts (optional) in parallel
+      var [billsText, countsText] = await Promise.all([
+        fetchUrl(BILLS_URL),
+        fetchUrl(COUNTS_URL).catch(function () { return ''; }),
+      ]);
+
+      var billsData = extractJson(billsText);
+      var bills = billsData.bills || [];
+
+      var counts = {};
+      var countsAvailable = false;
+      if (countsText && countsText.trim().length > 0) {
+        try {
+          var countsData = extractJson(countsText);
+          counts = countsData.counts || {};
+          countsAvailable = true;
+        } catch (_) { /* counts not yet available */ }
+      }
+
+      if (!bills.length) {
+        setNotice('No bills found in bills.json.', 'warn');
+        setRefreshing(false);
+        return;
+      }
+
+      setNotice('');
+      updateStats(bills, counts, billsData.generated, countsAvailable);
+      buildStateFilters(bills);
+
+      var maxClicks = countsAvailable
+        ? Math.max(1, ...Object.values(counts))
+        : 1;
+
+      allRows = buildRows(bills, counts, maxClicks);
+      var visibleRows = activeState === 'ALL'
+        ? allRows
+        : allRows.filter(function (r) { return r[0] === activeState; });
+
+      renderGrid(visibleRows);
+
+    } catch (err) {
+      setNotice('Failed to load data: ' + err.message, 'error');
+    }
+
+    setRefreshing(false);
+  };
+
+  // Auto-load on open
+  window.loadData();
+})();
+</script>
+</body>
+</html>
