@@ -22,9 +22,26 @@
  *   via MailChannels (built into Cloudflare Workers — no extra API key required).
  *   Subject line flags opposition submissions so C-Chairs notice them immediately.
  *
+ * Click Tracking:
+ *   POST /track  { state: 'MI', bill_number: 'HB5262' }
+ *   Increments a per-bill click counter stored in Cloudflare KV (binding: CLICKS).
+ *   Called fire-and-forget from take-action.html when the user clicks "Send."
+ *   KV key format: click:MI:HB5262
+ *
+ *   GET /counts
+ *   Returns all click counts as JSON: { counts: { "MI:HB5262": 47, ... } }
+ *   Useful for dashboards and admin reporting.
+ *
  * Setup:
  *   - wrangler secret put OPENSTATES_API_KEY   (or set via dashboard)
+ *   - wrangler kv namespace create CLICKS      (add the returned IDs to wrangler.toml)
  *   - Deploy: wrangler deploy
+ *
+ * wrangler.toml KV binding (add this stanza):
+ *   [[kv_namespaces]]
+ *   binding = "CLICKS"
+ *   id = "<your-kv-namespace-id>"
+ *   preview_id = "<your-preview-kv-namespace-id>"  # optional, for wrangler dev
  *
  * CORS: allows requests from any origin (adjust ALLOWED_ORIGIN if you
  * want to restrict to slef-moaa.com specifically).
@@ -52,7 +69,7 @@ function jsonResponse(data, status = 200) {
 }
 
 // ---------------------------------------------------------------------------
-// Legislator lookup helpers (unchanged)
+// Legislator lookup helpers
 // ---------------------------------------------------------------------------
 
 // Returns true if this person is a STATE legislator (not federal Congress).
@@ -415,6 +432,41 @@ async function sendSubmissionEmail(body) {
 }
 
 // ---------------------------------------------------------------------------
+// Click tracking — KV helpers
+// ---------------------------------------------------------------------------
+
+// Builds the KV key for a bill, e.g. "click:MI:HB5262"
+function clickKey(state, billNumber) {
+  return 'click:' + state.toUpperCase() + ':' + billNumber.replace(/\s+/g, '').toUpperCase();
+}
+
+// Atomically increment a click counter in KV.
+// KV doesn't have native atomic increment, so we read-then-write.
+// Race conditions are acceptable here — off-by-one on a counter is fine.
+async function incrementClick(kv, state, billNumber) {
+  var key = clickKey(state, billNumber);
+  var current = parseInt((await kv.get(key)) || '0', 10);
+  var next = current + 1;
+  await kv.put(key, String(next));
+  return next;
+}
+
+// Return all click counts as a plain object: { "MI:HB5262": 47, ... }
+async function getAllCounts(kv) {
+  var list = await kv.list({ prefix: 'click:' });
+  var counts = {};
+  // fetch all values in parallel
+  var entries = await Promise.all(
+    list.keys.map(async function (item) {
+      var val = await kv.get(item.name);
+      return { key: item.name.replace(/^click:/, ''), count: parseInt(val || '0', 10) };
+    })
+  );
+  entries.forEach(function (e) { counts[e.key] = e.count; });
+  return counts;
+}
+
+// ---------------------------------------------------------------------------
 // Route handler
 // ---------------------------------------------------------------------------
 
@@ -451,11 +503,65 @@ export default {
     }
 
     // ------------------------------------------------------------------
+    // POST /track — increment click count for a bill
+    // Body: { state: 'MI', bill_number: 'HB5262' }
+    // Called fire-and-forget from take-action.html on send button click.
+    // ------------------------------------------------------------------
+    if (request.method === 'POST' && url.pathname === '/track') {
+      if (!env.CLICKS) {
+        // KV not configured — fail silently so the UI is never affected
+        return jsonResponse({ ok: false, error: 'KV binding CLICKS not configured' }, 500);
+      }
+
+      var body;
+      try {
+        body = await request.json();
+      } catch (_) {
+        return jsonResponse({ error: 'Request body must be valid JSON' }, 400);
+      }
+
+      var state      = (body.state || '').trim().toUpperCase();
+      var billNumber = (body.bill_number || '').trim();
+
+      if (!state || !/^[A-Z]{2}$/.test(state)) {
+        return jsonResponse({ error: 'state must be a 2-letter postal code' }, 400);
+      }
+      if (!billNumber) {
+        return jsonResponse({ error: 'bill_number is required' }, 400);
+      }
+
+      try {
+        var newCount = await incrementClick(env.CLICKS, state, billNumber);
+        return jsonResponse({ ok: true, count: newCount });
+      } catch (err) {
+        return jsonResponse({ error: err.message || 'Failed to record click' }, 502);
+      }
+    }
+
+    // ------------------------------------------------------------------
+    // GET /counts — return all per-bill click counts
+    // Response: { counts: { "MI:HB5262": 47, "PA:SB1209": 12 }, total: 59 }
+    // ------------------------------------------------------------------
+    if (request.method === 'GET' && url.pathname === '/counts') {
+      if (!env.CLICKS) {
+        return jsonResponse({ error: 'KV binding CLICKS not configured' }, 500);
+      }
+
+      try {
+        var counts = await getAllCounts(env.CLICKS);
+        var total  = Object.values(counts).reduce(function (sum, n) { return sum + n; }, 0);
+        return jsonResponse({ counts: counts, total: total });
+      } catch (err) {
+        return jsonResponse({ error: err.message || 'Failed to retrieve counts' }, 502);
+      }
+    }
+
+    // ------------------------------------------------------------------
     // GET /?zip=XXXXX[&street=123+Main+St] — legislator lookup
     // street is optional; when provided the Census Bureau Geocoder is used
     // for parcel-level precision instead of the ZIP centroid.
     // ------------------------------------------------------------------
-    var zip = url.searchParams.get('zip');
+    var zip    = url.searchParams.get('zip');
     var street = (url.searchParams.get('street') || '').trim();
 
     if (!zip || !/^\d{5}$/.test(zip)) {
