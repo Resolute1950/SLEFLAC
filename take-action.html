@@ -444,6 +444,20 @@ textarea {
   document.getElementById('email-subject').addEventListener('input', updateSendLink);
   document.getElementById('email-body').addEventListener('input', updateSendLink);
 
+  // Fire-and-forget click tracking when user opens their email app.
+  // Never blocks the mailto link — errors are silently swallowed.
+  document.getElementById('send-btn').addEventListener('click', function () {
+    if (!currentBill) return;
+    fetch(WORKER_URL + 'track', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        state: currentBill.state,
+        bill_number: currentBill.bill_number,
+      }),
+    }).catch(function () {});
+  });
+
   document.getElementById('copy-btn').addEventListener('click', function () {
     var text = document.getElementById('email-body').value;
     navigator.clipboard.writeText(text).then(function () {
