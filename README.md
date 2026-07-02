@@ -30,8 +30,8 @@ fetch-bill-status.mjs        worker.js
 ### 1. Bill status tracking
 
 - **`tracked-bills.json`** — the curated list of bills to track. Each entry
-  has `state`, `bill_number`, plus display metadata (`label`, `category`,
-  `chapter`, `summary`, `priority`, `advocacy_url`, `position`,
+  has `state`, `bill_number`, `bill_url`, plus display metadata (`label`,
+  `category`, `chapter`, `summary`, `priority`, `advocacy_url`, `position`,
   `position_notes`) and take-action fields (`chamber_target`,
   `email_subject`, `email_template`).
 
@@ -39,7 +39,9 @@ fetch-bill-status.mjs        worker.js
   LegiScan for each bill's current status (with automatic retry on transient
   network errors), stamps `final_date` when a bill first reaches a terminal
   status, prunes expired bills from both JSON files after 30 days, and
-  writes `bills.json`.
+  writes `bills.json`. If the LegiScan call fails for a bill (or an entire
+  state), the "View bill text" link doesn't disappear — the script falls
+  back to the manually-curated `bill_url` from `tracked-bills.json`.
 
 - **`.github/workflows/update-bill-status.yml`** — runs the script daily
   (12:00 UTC) and whenever `tracked-bills.json` changes, committing the
@@ -193,6 +195,7 @@ Edit `tracked-bills.json` and add a new entry to the `bills` array:
 {
   "state": "OH",
   "bill_number": "HB123",
+  "bill_url": "https://<official state legislature link to the bill>",
   "label": "Short descriptive name",
   "category": "Category for grouping on the page",
   "chapter": "Which MOAA chapter/council is tracking this",
@@ -211,6 +214,11 @@ Field notes:
 
 - `state` — 2-letter postal code (used for both LegiScan and Open States)
 - `bill_number` — must match LegiScan's format (e.g. `HB123`, `SB45`, no space)
+- `bill_url` — a stable, manually-set link to the official bill page
+  (prefer the state legislature site; the LegiScan bill page also works).
+  Used as the "View bill text" link whenever the LegiScan API fetch fails
+  for that bill or state, so the link is never lost during an outage or
+  rate limit. Update it if the URL ever changes.
 - `category` — bills are grouped under this heading on the tracker; a new
   category creates a new section automatically, no embed changes needed
 - `chamber_target` — `"lower"` (House/Assembly), `"upper"` (Senate), or
@@ -241,6 +249,7 @@ pill to the tracker widget — no embed changes needed.
 |---|---|---|---|
 | `state` | string | ✓ | 2-letter postal code |
 | `bill_number` | string | ✓ | LegiScan-format bill number |
+| `bill_url` | string | ✓ | Stable manual link to the bill page; used as fallback "View bill text" link when LegiScan fetch fails |
 | `label` | string | ✓ | Short display title |
 | `category` | string | ✓ | Grouping heading on the tracker |
 | `chapter` | string | ✓ | Submitting MOAA chapter or council |
