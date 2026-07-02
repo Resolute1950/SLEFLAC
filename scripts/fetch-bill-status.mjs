@@ -140,8 +140,10 @@ function simplifyBill(bill, meta) {
     last_action_date: lastAction ? lastAction.date : null,
     last_action: lastAction ? lastAction.action : null,
     committee: bill.committee ? bill.committee.name : null,
-    state_link: bill.state_link,
-    legiscan_url: bill.url,
+    // Prefer the live LegiScan/state link, but fall back to the curated
+    // bill_url from tracked-bills.json if the API ever returns one blank.
+    state_link: bill.state_link || meta.bill_url || null,
+    legiscan_url: bill.url || meta.bill_url || null,
     final_date: finalDate,
     updated: new Date().toISOString(),
   };
@@ -161,6 +163,11 @@ function errorEntry(state, entry, statusLabel, errorMsg) {
     email_subject: entry.email_subject || null,
     email_template: entry.email_template || null,
     status_label: statusLabel,
+    // Hardwired fallback link — even when the LegiScan API call fails
+    // (rate limit, outage, session lookup error), users can still read
+    // the bill text via the manually-curated bill_url.
+    state_link: entry.bill_url || null,
+    legiscan_url: entry.bill_url || null,
     error: errorMsg,
     updated: new Date().toISOString(),
   };
