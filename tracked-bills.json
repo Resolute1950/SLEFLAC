@@ -1,9 +1,10 @@
 {
-  "_comment": "Curated list of veteran-related state bills tracked for the SLEF national tracker. Add new entries as MOAA chapters identify priority bills. 'state' must be a 2-letter postal code (used for both LegiScan and Open States). 'bill_number' must match LegiScan's format (e.g. HB5262, SB123). 'chamber_target' is 'lower' (House/Assembly), 'upper' (Senate), or 'both' — determines which legislators from the ZIP lookup are shown as recipients. 'email_template' supports placeholders: [LEGISLATOR_NAME], [FULL_NAME], [CITY], [STATE], [CHAPTER].",
+  "_comment": "Curated list of veteran-related state bills tracked for the SLEF national tracker. Add new entries as MOAA chapters identify priority bills. 'state' must be a 2-letter postal code (used for both LegiScan and Open States). 'bill_number' must match LegiScan's format (e.g. HB5262, SB123). 'bill_url' is a manually-set, stable link to the official bill page (state legislature site preferred) — used as the 'View bill text' link whenever the LegiScan API fetch fails, so the link never disappears even during an outage. 'chamber_target' is 'lower' (House/Assembly), 'upper' (Senate), or 'both' — determines which legislators from the ZIP lookup are shown as recipients. 'email_template' supports placeholders: [LEGISLATOR_NAME], [FULL_NAME], [CITY], [STATE], [CHAPTER].",
   "bills": [
     {
       "state": "MI",
       "bill_number": "HB5262",
+      "bill_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "label": "Veteran of the Uniformed Services Definition",
       "category": "Veteran Recognition (NOAA/USPHS)",
       "chapter": "Michigan Council of Chapters",
@@ -19,6 +20,7 @@
     {
       "state": "MI",
       "bill_number": "HB5278",
+      "bill_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "label": "State ID Card Veteran Designation",
       "category": "Veteran Recognition (NOAA/USPHS)",
       "chapter": "Michigan Council of Chapters",
@@ -34,6 +36,7 @@
     {
       "state": "MI",
       "bill_number": "HB5279",
+      "bill_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "label": "Driver's License Veteran Designation",
       "category": "Veteran Recognition (NOAA/USPHS)",
       "chapter": "Michigan Council of Chapters",
@@ -49,6 +52,7 @@
     {
       "state": "MI",
       "bill_number": "HB5280",
+      "bill_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "label": "Retirement Pay Tax Equity",
       "category": "Veteran Recognition (NOAA/USPHS)",
       "chapter": "Michigan Council of Chapters",
@@ -64,6 +68,7 @@
     {
       "state": "MN",
       "bill_number": "HF3911",
+      "bill_url": "https://www.revisor.mn.gov/bills/94/2026/0/HF/3911/",
       "label": "Veterans Home Eligibility for NOAA & USPHS Officers",
       "category": "Veteran Recognition (NOAA/USPHS)",
       "chapter": "Minnesota Council of Chapters",
@@ -79,6 +84,7 @@
     {
       "state": "PA",
       "bill_number": "SB1209",
+      "bill_url": "https://www.palegis.us/legislation/bills/2025/sb1209",
       "label": "PA Benefit Scam Protection",
       "category": "Benefits",
       "chapter": "Pennsylvania Council of Chapters",
@@ -94,6 +100,7 @@
     {
       "state": "PA",
       "bill_number": "HB1918",
+      "bill_url": "https://www.palegis.us/legislation/bills/2025/hb1918",
       "label": "Prohibiting Compensation for Veterans' Benefits Assistance",
       "category": "Benefits",
       "chapter": "Cumberland Valley (PA) Chapter",
@@ -109,6 +116,7 @@
     {
       "state": "PA",
       "bill_number": "HB1177",
+      "bill_url": "https://www.palegis.us/legislation/bills/2025/hb1177",
       "label": "Income Tax Relief for USPHS and NOAA Officers on Active Duty",
       "category": "Taxes",
       "chapter": "Cumberland Valley (PA) Chapter",
@@ -124,6 +132,7 @@
     {
       "state": "NJ",
       "bill_number": "SB1194",
+      "bill_url": "https://www.njleg.state.nj.us/bill-search/2026/S1194",
       "label": "Veterans' Gross Income Tax Exemption Parity for All Uniformed Services",
       "category": "Taxes",
       "chapter": "Greater Cincinnati",
