@@ -120,6 +120,21 @@
       "position_notes": "",
       "email_subject": "Support for HB 1177 — Income Tax Relief for USPHS & NOAA Officers",
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HB 1177, which would amend the Tax Reform Code of 1971 to extend Pennsylvania income tax relief to commissioned officers of the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) while serving on active duty or active-duty orders outside Pennsylvania.\n\nBoth USPHS and NOAA serve vital roles for our nation’s health and well-being. Their officers routinely go into harm’s way in service to our country, just as members of the Armed Forces do. Yet while Pennsylvania exempts Armed Forces income from state income tax, USPHS and NOAA officers’ income remains taxable — an inequity that HB 1177 would correct.\n\nThis is a straightforward matter of equal treatment for those who serve in uniform. I respectfully ask for your support in advancing HB 1177.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]"
+    },
+    {
+      "state": "NJ",
+      "bill_number": "SB1194",
+      "label": "Veterans' Gross Income Tax Exemption Parity for All Uniformed Services",
+      "category": "Taxes",
+      "chapter": "Greater Cincinnati",
+      "summary": "Extends eligibility for the Armed Forces retirement pay income tax exemption to include veterans of all Uniformed Services of the United States.",
+      "priority": true,
+      "advocacy_url": "https://moaa-mcoc.github.io/LAC/?bill=SB1194",
+      "chamber_target": "both",
+      "email_subject": "Support for S1194 — Income Tax Exemption Parity for USPHS & NOAA Retirees",
+      "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for S1194, which would extend New Jersey's gross income tax exemption for Armed Forces retirement pay to veterans of all Uniformed Services of the United States, including the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) Commissioned Corps.\n\nUSPHS and NOAA Corps officers are recognized as veterans under federal law (Title 38 USC) and serve alongside the Armed Forces in vital roles for our nation's health and environmental security. New Jersey currently taxes their retirement pay while exempting that of Armed Forces retirees — an inconsistency S1194 would correct at minimal cost to the state, as only a small number of USPHS and NOAA Corps retirees reside in New Jersey.\n\nI respectfully ask for your support in advancing S1194.\n\nThank you for your service to the people of New Jersey.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
+      "position": "support",
+      "position_notes": "Tax parity will cost the state very little (two NOAA Corps retirees and 49 USPHS retirees live in New Jersey) but will be very meaningful recognition of the USPHS and NOAA Corps retirees' service."
     }
   ]
 }
