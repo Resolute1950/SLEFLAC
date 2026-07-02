@@ -50,6 +50,12 @@ body {
 .bill-card-code { font-family: Georgia, serif; font-weight: 700; font-size: 16px; color: var(--navy); }
 .bill-card-label { font-weight: 600; font-size: 14px; margin: 2px 0 6px; }
 .bill-card-summary { font-size: 13px; color: var(--gray-500); line-height: 1.5; }
+.bill-card-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12.5px; font-weight: 600; color: var(--navy);
+  text-decoration: none; margin-top: 8px;
+}
+.bill-card-link:hover { text-decoration: underline; }
 
 .position-badge {
   display: inline-flex; align-items: center; gap: 5px;
@@ -243,10 +249,15 @@ textarea {
     if (bill.position_notes && bill.position_notes.trim()) {
       notesHtml = '<div class="position-notes ' + position + '">' + escapeHtml(bill.position_notes.trim()) + '</div>';
     }
+    var billLink = bill.state_link || bill.legiscan_url;
+    var billLinkHtml = billLink
+      ? '<a class="bill-card-link" href="' + escapeHtml(billLink) + '" target="_blank" rel="noopener">Read the Bill &#8599;</a>'
+      : '';
     container.innerHTML =
       '<div class="bill-card-code">' + escapeHtml((bill.state || '') + ' ' + bill.bill_number) + '</div>' +
       '<div class="bill-card-label">' + escapeHtml(bill.label || bill.title || '') + '</div>' +
       '<div class="bill-card-summary">' + escapeHtml(bill.summary || '') + '</div>' +
+      billLinkHtml +
       '<div class="position-badge ' + position + '">' + badgeLabel + '</div>' +
       notesHtml;
   }
