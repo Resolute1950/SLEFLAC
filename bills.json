@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-02T10:00:17.316Z",
+  "generated": "2026-07-02T10:04:21.225Z",
   "bills": [
     {
       "state": "MI",
@@ -15,7 +15,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HB 5262, which would amend Act 190 of 1965 to include commissioned officers of NOAA and the USPHS as a class of veterans, consistent with the federal definition under Title 38 of the United States Code.\n\nUnder federal law, NOAA and USPHS commissioned officers are recognized as veterans by the Department of Veterans Affairs. Michigan law currently fails to extend this same recognition, creating an unjust gap in benefits and honors for individuals who have served in a uniformed capacity.\n\nHB 5262 is a straightforward alignment of Michigan law with existing federal standards. I respectfully ask for your support in advancing this bill through committee.\n\nThank you for your service to the people of Michigan.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:58:24.786Z"
+      "updated": "2026-07-02T10:02:28.754Z"
     },
     {
       "state": "MI",
@@ -31,7 +31,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to ask for your support of HB 5278, which would extend the veteran designation on Michigan state identification cards to commissioned officers of NOAA and the USPHS.\n\nThese uniformed service members are recognized as veterans under federal law (38 USC) but are currently excluded from this recognition on Michigan state IDs. This small change would mean a great deal to the men and women who served in these federal uniformed services and now call Michigan home.\n\nI respectfully request your support in moving HB 5278 forward in the House Government Operations Committee.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:58:24.848Z"
+      "updated": "2026-07-02T10:02:28.757Z"
     },
     {
       "state": "MI",
@@ -47,7 +47,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to request your support for HB 5279, which would extend the veteran designation on Michigan driver's licenses to commissioned officers of NOAA and the USPHS.\n\nThese federally recognized uniformed service veterans currently cannot receive the veteran designation on their Michigan driver's license — an inconsistency with federal law that this bill would correct. The change carries no meaningful fiscal impact and simply provides fair, equal recognition to all who have served.\n\nI ask that you support HB 5279 and help advance it through the House Government Operations Committee.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:58:24.848Z"
+      "updated": "2026-07-02T10:02:28.757Z"
     },
     {
       "state": "MI",
@@ -63,7 +63,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to respectfully request your support for HB 5280, which would extend Michigan retirement tax fairness to active duty, retired officers, and surviving spouses of the United States Public Health Service (USPHS) and National Oceanic and Atmospheric Administration (NOAA) Commissioned Corps.\n\nThese individuals are members of the uniformed services of the United States and are recognized as veterans by the Department of Veterans Affairs. HB 5280 is a narrow, fiscally responsible measure that simply ensures equal treatment among federally recognized uniformed services retirees.\n\nI respectfully ask that you support HB 5280 and assist in advancing the bill through the House Government Operations Committee.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:58:24.848Z"
+      "updated": "2026-07-02T10:02:28.757Z"
     },
     {
       "state": "MN",
@@ -79,7 +79,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HF 3911, which would authorize certain former commissioned officers of the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) Commissioned Corps to reside in Minnesota veterans homes, provided they meet honorable service and active duty requirements.\n\nUnder federal law (Title 38 USC), commissioned officers of the USPHS and NOAA are recognized as veterans by the Department of Veterans Affairs. Minnesota's veterans home eligibility rules currently do not reflect this recognition, leaving these veterans without access to a benefit available to their peers in other uniformed services.\n\nHF 3911 is a narrow, common-sense fix that aligns Minnesota law with the federal definition of veteran. I respectfully ask for your support in advancing this bill.\n\nThank you for your service to the people of Minnesota.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:59:02.336Z"
+      "updated": "2026-07-02T10:03:06.246Z"
     },
     {
       "state": "PA",
@@ -95,7 +95,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to express opposition to SB 1209 in its current form, which amends Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes regarding veterans’ claims assistance standards.\n\nWhile the goal of protecting veterans from predatory claims consultants is commendable, SB 1209 falls critically short by failing to require VA accreditation as a condition for providing veterans’ claims assistance. Under Title 38 of the United States Code, individuals who assist veterans with VA benefits claims are required to be accredited by the Department of Veterans Affairs. This federal accreditation standard exists precisely to ensure that those helping veterans are trained, accountable, and subject to oversight.\n\nBy omitting this requirement, SB 1209 would create a parallel state framework that is weaker than existing federal law — potentially enabling unaccredited individuals to operate under a false veneer of state legitimacy while still falling short of the federal protections veterans deserve.\n\nI urge you to amend SB 1209 to explicitly require VA accreditation under 38 USC for anyone providing veterans’ claims assistance in Pennsylvania, bringing the bill into full alignment with federal law before advancing it.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:59:39.827Z"
+      "updated": "2026-07-02T10:03:43.737Z"
     },
     {
       "state": "PA",
@@ -111,7 +111,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HB 1918, which would amend Title 51 (Military Affairs) of the Pennsylvania Consolidated Statutes to prohibit the charging of fees for veterans’ benefits claims assistance, except as expressly permitted under federal law.\n\nVeterans often face significant challenges when applying for the benefits they have earned through their service and sacrifice. Unfortunately, their need for assistance makes them vulnerable to “claim sharks” — unaccredited individuals and organizations that charge excessive fees and engage in predatory practices to exploit veterans’ trust. These bad actors do not adhere to the professional standards required of VA-accredited representatives, leaving veterans worse off than before.\n\nHB 1918 mirrors the proposed federal GUARD VA Benefits Act and would ensure that Pennsylvania veterans can access the benefits they have rightfully earned without fear of being taken advantage of. I respectfully ask for your support in advancing this bill.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:59:39.827Z"
+      "updated": "2026-07-02T10:03:43.737Z"
     },
     {
       "state": "PA",
@@ -127,7 +127,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for HB 1177, which would amend the Tax Reform Code of 1971 to extend Pennsylvania income tax relief to commissioned officers of the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) while serving on active duty or active-duty orders outside Pennsylvania.\n\nBoth USPHS and NOAA serve vital roles for our nation’s health and well-being. Their officers routinely go into harm’s way in service to our country, just as members of the Armed Forces do. Yet while Pennsylvania exempts Armed Forces income from state income tax, USPHS and NOAA officers’ income remains taxable — an inequity that HB 1177 would correct.\n\nThis is a straightforward matter of equal treatment for those who serve in uniform. I respectfully ask for your support in advancing HB 1177.\n\nThank you for your service to the people of Pennsylvania.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T09:59:39.827Z"
+      "updated": "2026-07-02T10:03:43.737Z"
     },
     {
       "state": "NJ",
@@ -143,7 +143,7 @@
       "email_template": "Dear [LEGISLATOR_NAME],\n\nI am writing to urge your support for S1194, which would extend New Jersey's gross income tax exemption for Armed Forces retirement pay to veterans of all Uniformed Services of the United States, including the United States Public Health Service (USPHS) and the National Oceanic and Atmospheric Administration (NOAA) Commissioned Corps.\n\nUSPHS and NOAA Corps officers are recognized as veterans under federal law (Title 38 USC) and serve alongside the Armed Forces in vital roles for our nation's health and environmental security. New Jersey currently taxes their retirement pay while exempting that of Armed Forces retirees — an inconsistency S1194 would correct at minimal cost to the state, as only a small number of USPHS and NOAA Corps retirees reside in New Jersey.\n\nI respectfully ask for your support in advancing S1194.\n\nThank you for your service to the people of New Jersey.\n\nRespectfully,\n[FULL_NAME]\n[CITY], [STATE]\nMember, [CHAPTER]",
       "status_label": "Error",
       "error": "fetch failed",
-      "updated": "2026-07-02T10:00:17.315Z"
+      "updated": "2026-07-02T10:04:21.225Z"
     }
   ]
 }
