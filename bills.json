@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-08T17:14:54.194Z",
+  "generated": "2026-07-09T18:30:22.039Z",
   "bills": [
     {
       "state": "MI",
@@ -17,7 +17,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "legiscan_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5262",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:13:01.726Z"
+      "updated": "2026-07-09T18:28:29.572Z"
     },
     {
       "state": "MI",
@@ -35,7 +35,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "legiscan_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5278",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:13:01.732Z"
+      "updated": "2026-07-09T18:28:29.572Z"
     },
     {
       "state": "MI",
@@ -53,7 +53,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "legiscan_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5279",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:13:01.732Z"
+      "updated": "2026-07-09T18:28:29.572Z"
     },
     {
       "state": "MI",
@@ -71,7 +71,7 @@
       "state_link": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "legiscan_url": "https://legislature.mi.gov/Bills/Bill?ObjectName=2025-HB-5280",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:13:01.732Z"
+      "updated": "2026-07-09T18:28:29.572Z"
     },
     {
       "state": "MN",
@@ -89,7 +89,7 @@
       "state_link": "https://www.revisor.mn.gov/bills/94/2026/0/HF/3911/",
       "legiscan_url": "https://www.revisor.mn.gov/bills/94/2026/0/HF/3911/",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:13:39.218Z"
+      "updated": "2026-07-09T18:29:07.061Z"
     },
     {
       "state": "PA",
@@ -107,7 +107,7 @@
       "state_link": "https://www.palegis.us/legislation/bills/2025/sb1209",
       "legiscan_url": "https://www.palegis.us/legislation/bills/2025/sb1209",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:14:16.708Z"
+      "updated": "2026-07-09T18:29:44.550Z"
     },
     {
       "state": "PA",
@@ -125,7 +125,7 @@
       "state_link": "https://www.palegis.us/legislation/bills/2025/hb1918",
       "legiscan_url": "https://www.palegis.us/legislation/bills/2025/hb1918",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:14:16.708Z"
+      "updated": "2026-07-09T18:29:44.550Z"
     },
     {
       "state": "PA",
@@ -143,7 +143,7 @@
       "state_link": "https://www.palegis.us/legislation/bills/2025/hb1177",
       "legiscan_url": "https://www.palegis.us/legislation/bills/2025/hb1177",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:14:16.708Z"
+      "updated": "2026-07-09T18:29:44.550Z"
     },
     {
       "state": "NJ",
@@ -161,7 +161,7 @@
       "state_link": "https://www.njleg.state.nj.us/bill-search/2026/S1194",
       "legiscan_url": "https://www.njleg.state.nj.us/bill-search/2026/S1194",
       "error": "fetch failed",
-      "updated": "2026-07-08T17:14:54.194Z"
+      "updated": "2026-07-09T18:30:22.039Z"
     }
   ]
 }
